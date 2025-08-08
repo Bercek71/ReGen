@@ -1,0 +1,205 @@
+﻿<Window x:Class="ReGen.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewModels="clr-namespace:ReGen.ViewModels"
+        Title="CSV Report Generator"
+        Width="640" Height="725"
+        MinWidth="500" MinHeight="400"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        FontFamily="Segoe UI Variable, Segoe UI, Arial"
+        RenderOptions.BitmapScalingMode="HighQuality"
+        ResizeMode="CanResize"
+        >
+        <!-- UseLayoutRounding="True" -->
+        <!-- RenderOptions.EdgeMode="Aliased" -->
+        <Window.DataContext>
+            <viewModels:MainViewModel />
+        </Window.DataContext>
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Style/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Glassmorphism Effect for Header -->
+            <LinearGradientBrush x:Key="HeaderGradient" StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#FF6366F1" Offset="0"/>
+                <GradientStop Color="#FF8B5CF6" Offset="0.5"/>
+                <GradientStop Color="#FFEC4899" Offset="1"/>
+            </LinearGradientBrush>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <!-- Main Container with Modern Shadow -->
+    <Border Style="{StaticResource Card}"
+            Background="{StaticResource BackgroundBrush}"
+            Effect="{StaticResource WindowShadow}"
+            MouseLeftButtonDown="DragWindow">
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header Section with Gradient -->
+            <Border Grid.Row="0" 
+                    Background="{StaticResource HeaderGradient}"
+                    CornerRadius="16,16,0,0"
+                    Margin="-32,-32,-32,0"
+                    Padding="32,24,32,32">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Header Content -->
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="CSV Report Generator"
+                                   FontSize="24" FontWeight="Bold"
+                                   Foreground="White"
+                                   Margin="0,0,0,4"/>
+                        <TextBlock Text="Transform your data into beautiful reports"
+                                   FontSize="14"
+                                   Foreground="#FFFFFF90"
+                                   FontWeight="Normal"/>
+                    </StackPanel>
+
+                    <!-- Window Controls -->
+                    <StackPanel Grid.Column="1" 
+                                Orientation="Horizontal" 
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Right">
+                        <Button Content="✕"
+                                Style="{StaticResource CloseButton}"
+                                Background="Red"
+                                Foreground="White"
+                                Command="{Binding ExitAppCommand}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Main Content -->
+            <ScrollViewer Grid.Row="1" 
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          Padding="1,32,1,8"
+                          >
+                <StackPanel 
+                    MaxWidth="500"
+                            HorizontalAlignment="Center">
+
+                    <!-- Name Input Section -->
+                    <StackPanel Style="{StaticResource InputGroup}">
+                        <TextBlock Text="Your Name" Style="{StaticResource FormLabel}"/>
+                        <TextBox
+                            HorizontalScrollBarVisibility="Disabled"
+                            Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" 
+                            Style="{StaticResource ModernTextBox}"
+                            />
+                    </StackPanel>
+
+                    <!-- CSV File Selection Section -->
+                    <StackPanel Style="{StaticResource InputGroup}">
+                        <TextBlock Text="Select CSV File" Style="{StaticResource FormLabel}"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBox
+                                Grid.Column="0"
+                                     Style="{StaticResource ModernTextBox}"
+                                     Text="{Binding CsvFilePathDisplay, Mode=OneWay}"
+                                     IsReadOnly="True"
+                                    TextWrapping="NoWrap"
+                                    ToolTip="{Binding CsvFilePath}"
+                                    HorizontalScrollBarVisibility="Disabled"
+                                     Foreground="{StaticResource TextMutedBrush}"
+                                     Margin="0,0,12,0"/>
+                            
+                            <Button Grid.Column="1"
+                                    Content="📁 Browse"
+                                    Style="{StaticResource SecondaryButton}"
+                                    Command="{Binding BrowseCsvCommand}"
+                                    Margin="0"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Feature Cards -->
+                    <Border Background="{StaticResource SurfaceBrush}"
+                            CornerRadius="12"
+                            BorderBrush="{StaticResource BorderBrush}"
+                            BorderThickness="1"
+                            Padding="20"
+                            Margin="0,8,0,24">
+                        <StackPanel>
+                            <TextBlock Text="✨ Features" 
+                                       FontWeight="SemiBold" 
+                                       FontSize="14"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       Margin="0,0,0,12"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                                    <TextBlock Text="📊 Smart Analytics" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                    <TextBlock Text="🎨 Beautiful Design" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="⚡ Fast Processing" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                    <TextBlock Text="📤 Easy Export" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Action Buttons -->
+                    <StackPanel Orientation="Horizontal" 
+                                HorizontalAlignment="Center"
+                                Margin="0,16,0,0">
+                        <Button Content="🚀 Generate Report"
+                                Style="{StaticResource SuccessButton}"
+                                Command="{Binding GenerateReportCommand}"
+                                MinWidth="160"/>
+                        <Button Content="❌ Exit"
+                                Style="{StaticResource DangerButton}"
+                                Command="{Binding ExitAppCommand}"
+                                MinWidth="100"/>
+                    </StackPanel>
+
+                </StackPanel>
+            </ScrollViewer>
+
+
+
+            <!-- Footer -->
+            <Border Grid.Row="2"
+                    Background="{StaticResource SurfaceBrush}"
+                    CornerRadius="0,0,16,16"
+                    Margin="-32,0,-32,-32"
+                    Padding="32,16,32,24"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="0,1,0,0">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="Made with ❤️ using WPF &amp; Modern Design"
+                               Style="{StaticResource Footer}"/>
+                    <TextBlock Text="v2.0.0 • Built for productivity"
+                               FontSize="10"
+                               Foreground="{StaticResource TextMutedBrush}"
+                               HorizontalAlignment="Center"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
