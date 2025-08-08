@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
+
 using System.Windows.Input;
 using Microsoft.Win32;
 using QuestPDF.Fluent;
 using ReGen.Extensions;
+using static ReGen.Generators.PdfGenerator;
 
 namespace ReGen.ViewModels;
 
@@ -83,7 +84,7 @@ public class MainViewModel : BaseViewModel
     
     private void PreviewReport(object _)
     {
-        var doc = PdfGenerator.GeneratePdfReport(UserName, CsvFilePath);
+        var doc = GeneratePdfReport(UserName, CsvFilePath);
         doc.GeneratePdfAndShow();
     }
 }

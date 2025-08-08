@@ -1,12 +1,10 @@
-﻿using System.IO;
-using System.Windows;
-using QuestPDF.Fluent;
+﻿using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
-namespace ReGen;
+namespace ReGen.Generators;
 
-public class PdfGenerator
+public static class PdfGenerator
 {
     private static Image GeneratePlot(string csvFilePath)
     {
