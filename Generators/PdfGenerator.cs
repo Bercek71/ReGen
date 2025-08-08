@@ -6,11 +6,7 @@ namespace ReGen.Generators;
 
 public static class PdfGenerator
 {
-    private static Image GeneratePlot(string csvFilePath)
-    {
-        throw new NotImplementedException();
-        // return new Image(null);
-    }
+
     public static IDocument GeneratePdfReport(string userName, string csvFilePath)
     {
         return Document.Create(container =>
