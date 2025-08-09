@@ -4,8 +4,8 @@
         xmlns:viewModels="clr-namespace:ReGen.ViewModels"
         xmlns:validation="clr-namespace:ReGen.Validation"
         Title="CSV Report Generator"
-        Width="900" Height="900"
-        MinWidth="800" MinHeight="600"
+        Width="900" Height="800"
+        MinWidth="900" MinHeight="800"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -13,6 +13,7 @@
         FontFamily="Segoe UI Variable, Segoe UI, Arial"
         RenderOptions.BitmapScalingMode="HighQuality"
         ResizeMode="CanResize"
+        StateChanged="MainWindow_OnStateChanged"
         >
         <!-- UseLayoutRounding="True" -->
         <!-- RenderOptions.EdgeMode="Aliased" -->
@@ -85,17 +86,35 @@
                     </StackPanel>
                 </Grid>
             </Border>
+            
+
 
             <!-- Main Content -->
             <ScrollViewer Grid.Row="1" 
                           Focusable="False"
                           VerticalScrollBarVisibility="Auto"
                           HorizontalScrollBarVisibility="Disabled"
-                          Padding="1,32,1,8"
+                          Padding="1,15,1,8"
                           >
+                
                 <StackPanel 
                     Width="650"
                     HorizontalAlignment="Center">
+                    
+                    
+                    <Button  Content="{Binding LockButtonContent}"
+                            Width="32" Height="32"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Margin="0,16,16,0"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Cursor="Hand"
+                            ToolTip="Lock/Unlock"
+                            Command="{Binding OnLockClickCommand}"
+                    
+                    />
+
 
                     <!-- Top Row: Technician, Stamp, Work Order -->
                     <StackPanel Style="{StaticResource InputGroup}">
@@ -225,6 +244,7 @@
                                 Grid.Column="4"
                                 Grid.Row="1"
                                 HorizontalScrollBarVisibility="Disabled"
+                                IsEnabled="{Binding IsRestrictedFieldEditEnabled}"
                                 Style="{StaticResource ModernTextBox}"
                                 />
                                 <!-- Text="{Binding Cmm, UpdateSourceTrigger=PropertyChanged}"  -->
@@ -259,35 +279,36 @@
                         </Grid>
                     </StackPanel>
 
+
                     <!-- Feature Cards -->
-                    <Border Background="{StaticResource SurfaceBrush}"
-                            CornerRadius="12"
-                            BorderBrush="{StaticResource BorderBrush}"
-                            BorderThickness="1"
-                            Padding="20"
-                            Margin="0,8,0,24">
-                        <StackPanel>
-                            <TextBlock Text="✨ Features" 
-                                       FontWeight="SemiBold" 
-                                       FontSize="14"
-                                       Foreground="{StaticResource TextPrimaryBrush}"
-                                       Margin="0,0,0,12"/>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0" Margin="0,0,12,0">
-                                    <TextBlock Text="📊 Smart Analytics" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
-                                    <TextBlock Text="🎨 Beautiful Design" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
-                                </StackPanel>
-                                <StackPanel Grid.Column="1">
-                                    <TextBlock Text="⚡ Fast Processing" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
-                                    <TextBlock Text="📤 Easy Export" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/>
-                                </StackPanel>
-                            </Grid>
-                        </StackPanel>
-                    </Border>
+                    <!-- <Border Background="{StaticResource SurfaceBrush}" -->
+                    <!--         CornerRadius="12" -->
+                    <!--         BorderBrush="{StaticResource BorderBrush}" -->
+                    <!--         BorderThickness="1" -->
+                    <!--         Padding="20" -->
+                    <!--         Margin="0,8,0,24"> -->
+                    <!--     <StackPanel> -->
+                    <!--         <TextBlock Text="✨ Features"  -->
+                    <!--                    FontWeight="SemiBold"  -->
+                    <!--                    FontSize="14" -->
+                    <!--                    Foreground="{StaticResource TextPrimaryBrush}" -->
+                    <!--                    Margin="0,0,0,12"/> -->
+                    <!--         <Grid> -->
+                    <!--             <Grid.ColumnDefinitions> -->
+                    <!--                 <ColumnDefinition Width="*"/> -->
+                    <!--                 <ColumnDefinition Width="*"/> -->
+                    <!--             </Grid.ColumnDefinitions> -->
+                    <!--             <StackPanel Grid.Column="0" Margin="0,0,12,0"> -->
+                    <!--                 <TextBlock Text="📊 Smart Analytics" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/> -->
+                    <!--                 <TextBlock Text="🎨 Beautiful Design" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/> -->
+                    <!--             </StackPanel> -->
+                    <!--             <StackPanel Grid.Column="1"> -->
+                    <!--                 <TextBlock Text="⚡ Fast Processing" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/> -->
+                    <!--                 <TextBlock Text="📤 Easy Export" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/> -->
+                    <!--             </StackPanel> -->
+                    <!--         </Grid> -->
+                    <!--     </StackPanel> -->
+                    <!-- </Border> -->
 
                     <!-- Action Buttons -->
                     <StackPanel Orientation="Horizontal" 
@@ -304,6 +325,7 @@
                     </StackPanel>
 
                 </StackPanel>
+
             </ScrollViewer>
 
             <!-- Footer -->

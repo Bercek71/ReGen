@@ -18,4 +18,11 @@ public partial class MainWindow : Window
         if (e.LeftButton == MouseButtonState.Pressed)
             this.DragMove();
     }
+
+    private void MainWindow_OnStateChanged(object? sender, EventArgs e)
+    {
+        if (this.WindowState == WindowState.Maximized)
+        {
+            this.WindowState = WindowState.Normal;
+        }    }
 }

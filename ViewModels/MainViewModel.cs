@@ -31,8 +31,21 @@ public class MainViewModel : BaseViewModel
         }
 
     }
-    
+
+    public bool IsRestrictedFieldEditEnabled
+    {
+        get => _isRestrictedFieldEditEnabled;
+        set
+        {
+            if (value == _isRestrictedFieldEditEnabled) return;
+            _isRestrictedFieldEditEnabled = value;
+            OnPropertyChanged();
+        }
+    }
+
     private string _technicianStampDisplay = Properties.Settings_Designer.Default.TechnicianStamp.ToString();
+    private string _lockButtonContent = LockContent.Lock;
+    private bool _isRestrictedFieldEditEnabled = false;
 
     public string TechnicianStampDisplay
     {
@@ -81,12 +94,40 @@ public class MainViewModel : BaseViewModel
     public ICommand BrowseCsvCommand { get; }
     public ICommand GenerateReportCommand { get; }
     public ICommand ExitAppCommand { get; }
-    
+
+    public string LockButtonContent
+    {
+        get => _lockButtonContent;
+        set
+        {
+            if (value == _lockButtonContent) return;
+            _lockButtonContent = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ICommand OnLockClickCommand { get; }
+
     public MainViewModel()
     {
         BrowseCsvCommand = new RelayCommand(BrowseCsvFile);
         GenerateReportCommand = new RelayCommand(GenerateReport);
         ExitAppCommand = new RelayCommand(ExitApp);
+        OnLockClickCommand = new RelayCommand(LockClickHandler);
+    }
+
+    private void LockClickHandler(object? _)
+    {
+        if (LockButtonContent == LockContent.Lock)
+        {
+            LockButtonContent = LockContent.Unlock;
+            IsRestrictedFieldEditEnabled = true;
+        }
+        else
+        {
+            LockButtonContent = LockContent.Lock;
+            IsRestrictedFieldEditEnabled = false;
+        }
     }
 
     private void ExitApp(object? _)
