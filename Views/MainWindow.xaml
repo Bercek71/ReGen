@@ -162,8 +162,8 @@
                                 Grid.Row="1"
                                 HorizontalScrollBarVisibility="Disabled"
                                 Style="{StaticResource ModernTextBox}"
+                                Text="{Binding WorkOrder, UpdateSourceTrigger=PropertyChanged}"
                                 />
-                                <!-- Text="{Binding WorkOrder, UpdateSourceTrigger=PropertyChanged}"  -->
                         </Grid>
                     </StackPanel>
 
@@ -186,14 +186,14 @@
                                 Grid.Row="1"
                                 HorizontalScrollBarVisibility="Disabled"
                                 Style="{StaticResource ModernTextBox}">
-                                <!-- <TextBox.Text> -->
-                                <!--     <Binding Path="MaintenanceCount" UpdateSourceTrigger="PropertyChanged"  -->
-                                <!--              Mode="TwoWay"> -->
-                                <!--         <Binding.ValidationRules> -->
-                                <!--             <validation:IntValidationRule /> -->
-                                <!--         </Binding.ValidationRules> -->
-                                <!--     </Binding> -->
-                                <!-- </TextBox.Text>                             -->
+                                <TextBox.Text>
+                                    <Binding Path="MaintenanceCountDisplay" UpdateSourceTrigger="PropertyChanged"
+                                             Mode="TwoWay">
+                                        <Binding.ValidationRules>
+                                            <validation:IntValidationRule />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
                             </TextBox>
 
                             <TextBlock Grid.Row="0" Grid.Column="2" Text="Last Maintenance" Style="{StaticResource FormLabel}"/>
@@ -201,8 +201,8 @@
                                 Grid.Column="2"
                                 Grid.Row="1"
                                 Style="{StaticResource ModernDatePicker}"
+                                SelectedDate="{Binding LastMaintenance, UpdateSourceTrigger=PropertyChanged}"
                                 />
-                                <!-- SelectedDate="{Binding LastMaintenance, UpdateSourceTrigger=PropertyChanged}" -->
                         </Grid>
                     </StackPanel>
 
@@ -227,8 +227,8 @@
                                 Grid.Row="1"
                                 HorizontalScrollBarVisibility="Disabled"
                                 Style="{StaticResource ModernTextBox}"
+                                Text="{Binding Acsn, UpdateSourceTrigger=PropertyChanged}"
                                 />
-                                <!-- Text="{Binding Acsn, UpdateSourceTrigger=PropertyChanged}"  -->
 
                             <TextBlock Grid.Row="0" Grid.Column="2" Text="Serial Number" Style="{StaticResource FormLabel}"/>
                             <TextBox
@@ -236,8 +236,8 @@
                                 Grid.Row="1"
                                 HorizontalScrollBarVisibility="Disabled"
                                 Style="{StaticResource ModernTextBox}"
+                                Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}"
                                 />
-                                <!-- Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}"  -->
 
                             <TextBlock Grid.Row="0" Grid.Column="4" Text="C.M.M." Style="{StaticResource FormLabel}"/>
                             <TextBox
@@ -246,8 +246,8 @@
                                 HorizontalScrollBarVisibility="Disabled"
                                 IsEnabled="{Binding IsRestrictedFieldEditEnabled}"
                                 Style="{StaticResource ModernTextBox}"
+                                Text="{Binding Cmm, UpdateSourceTrigger=PropertyChanged}"
                                 />
-                                <!-- Text="{Binding Cmm, UpdateSourceTrigger=PropertyChanged}"  -->
                         </Grid>
                     </StackPanel>
 

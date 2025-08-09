@@ -69,5 +69,65 @@ namespace ReGen.Properties {
                 this["TechnicianStamp"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SerialNumber {
+            get {
+                return ((string)(this["SerialNumber"]));
+            }
+            set {
+                this["SerialNumber"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ACSN {
+            get {
+                return ((string)(this["ACSN"]));
+            }
+            set {
+                this["ACSN"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string WorkOrder {
+            get {
+                return ((string)(this["WorkOrder"]));
+            }
+            set {
+                this["WorkOrder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2025-01-01")]
+        public global::System.DateTime LastMaintenance {
+            get {
+                return ((global::System.DateTime)(this["LastMaintenance"]));
+            }
+            set {
+                this["LastMaintenance"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int MaintenanceCount {
+            get {
+                return ((int)(this["MaintenanceCount"]));
+            }
+            set {
+                this["MaintenanceCount"] = value;
+            }
+        }
     }
 }

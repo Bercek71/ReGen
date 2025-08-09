@@ -15,5 +15,20 @@
         <Setting Name="TechnicianStamp" Type="System.Int32" Scope="User">
             <Value Profile="(Default)">1</Value>
         </Setting>
+        <Setting Name="SerialNumber" Type="System.String" Scope="User">
+            <Value Profile="(Default)"/>
+        </Setting>
+        <Setting Name="ACSN" Type="System.String" Scope="User">
+            <Value Profile="(Default)"/>
+        </Setting>
+        <Setting Name="WorkOrder" Type="System.String" Scope="User">
+            <Value Profile="(Default)"/>
+        </Setting>
+        <Setting Name="LastMaintenance" Type="System.DateTime" Scope="User">
+            <Value Profile="(Default)">2025-01-01</Value>
+        </Setting>
+        <Setting Name="MaintenanceCount" Type="System.Int32" Scope="User">
+            <Value Profile="(Default)">1</Value>
+        </Setting>
     </Settings>
 </SettingsFile>

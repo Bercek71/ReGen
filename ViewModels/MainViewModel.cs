@@ -21,7 +21,6 @@ public class MainViewModel : BaseViewModel
     {
         get
         {
-
             if (int.TryParse(_technicianStampDisplay, out var result))
             {
                 return result;
@@ -30,6 +29,20 @@ public class MainViewModel : BaseViewModel
             return null;
         }
 
+    }
+    
+    
+    private int? MaintenanceCount
+    {
+        get
+        {
+            if (int.TryParse(_maintenanceCountDisplay, out var result))
+            {
+                return result;
+            }
+
+            return null;
+        }
     }
 
     public bool IsRestrictedFieldEditEnabled
@@ -46,6 +59,12 @@ public class MainViewModel : BaseViewModel
     private string _technicianStampDisplay = Properties.Settings_Designer.Default.TechnicianStamp.ToString();
     private string _lockButtonContent = LockContent.Lock;
     private bool _isRestrictedFieldEditEnabled = false;
+    private string _cmm = Properties.Settings_Designer.Default.CMM;
+    private string _serialNumber = Properties.Settings_Designer.Default.SerialNumber;
+    private string _acsn = Properties.Settings_Designer.Default.ACSN;
+    private string _workOrder = Properties.Settings_Designer.Default.WorkOrder;
+    private DateTime _lastMaintenance = Properties.Settings_Designer.Default.LastMaintenance;
+    private string _maintenanceCountDisplay = Properties.Settings_Designer.Default.MaintenanceCount.ToString();
 
     public string TechnicianStampDisplay
     {
@@ -55,6 +74,9 @@ public class MainViewModel : BaseViewModel
             if (_technicianStampDisplay == value) return;
             _technicianStampDisplay = value;
             OnPropertyChanged();
+            if (!int.TryParse(value, out var result)) return;
+            Properties.Settings_Designer.Default.TechnicianStamp = result;
+            Properties.Settings_Designer.Default.Save();
         }
     }
 
@@ -66,6 +88,8 @@ public class MainViewModel : BaseViewModel
         set
         {
             _technicianName = value; OnPropertyChanged();
+            Properties.Settings_Designer.Default.TechnicianName = value;
+            Properties.Settings_Designer.Default.Save();
         }
     }
 
@@ -82,7 +106,7 @@ public class MainViewModel : BaseViewModel
     {
         get
         {
-            const int maxLength = 30;
+            const int maxLength = 100;
             if (string.IsNullOrWhiteSpace(_csvFilePath)) return string.Empty;
 
             return _csvFilePath.Length > maxLength
@@ -108,6 +132,88 @@ public class MainViewModel : BaseViewModel
 
     public ICommand OnLockClickCommand { get; }
 
+    public string Cmm
+    {
+        get => _cmm;
+        set
+        {
+            if (value == _cmm) return;
+            _cmm = value;
+            OnPropertyChanged();
+            Properties.Settings_Designer.Default.CMM = value;
+            Properties.Settings_Designer.Default.Save();
+        }
+    }
+
+    public string SerialNumber
+    {
+        get => _serialNumber;
+        set
+        {
+            if (value == _serialNumber) return;
+            _serialNumber = value;
+            OnPropertyChanged();
+            Properties.Settings_Designer.Default.SerialNumber = value;
+            Properties.Settings_Designer.Default.Save();
+        }
+    }
+
+    public string Acsn
+    {
+        get => _acsn;
+        set
+        {
+            if (value == _acsn) return;
+            _acsn = value;
+            OnPropertyChanged();
+            Properties.Settings_Designer.Default.ACSN = value;
+            Properties.Settings_Designer.Default.Save();
+        }
+    }
+
+    public DateTime LastMaintenance
+    {
+        get => _lastMaintenance;
+        set
+        {
+            if (value.Equals(_lastMaintenance)) return;
+            _lastMaintenance = value;
+            OnPropertyChanged();
+            Properties.Settings_Designer.Default.LastMaintenance = value;
+            Properties.Settings_Designer.Default.Save();
+        }
+    }
+
+    public string MaintenanceCountDisplay
+    
+    
+    {
+        get => _maintenanceCountDisplay;
+        set
+        {
+            if (value == _maintenanceCountDisplay) return;
+            _maintenanceCountDisplay = value;
+            OnPropertyChanged();
+            if (!int.TryParse(value, out var result)) return;
+            Properties.Settings_Designer.Default.MaintenanceCount = result;
+            Properties.Settings_Designer.Default.Save();
+            
+        }
+    }
+
+    public string WorkOrder
+    {
+        get => _workOrder;
+        set
+        {
+            if (value == _workOrder) return;
+            _workOrder = value;
+            OnPropertyChanged();
+            Properties.Settings_Designer.Default.WorkOrder = value;
+            Properties.Settings_Designer.Default.Save();
+        }
+    }
+
     public MainViewModel()
     {
         BrowseCsvCommand = new RelayCommand(BrowseCsvFile);
@@ -132,9 +238,6 @@ public class MainViewModel : BaseViewModel
 
     private void ExitApp(object? _)
     {
-        Properties.Settings_Designer.Default.TechnicianName = TechnicianName;
-        if (TechnicianStamp != null) Properties.Settings_Designer.Default.TechnicianStamp = TechnicianStamp.Value;
-        Properties.Settings_Designer.Default.Save();
         Application.Current.Shutdown();
     }
 
