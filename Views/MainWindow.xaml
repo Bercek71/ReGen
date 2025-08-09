@@ -112,7 +112,6 @@
                             Cursor="Hand"
                             ToolTip="Lock/Unlock"
                             Command="{Binding OnLockClickCommand}"
-                    
                     />
 
 
@@ -201,7 +200,8 @@
                                 Grid.Column="2"
                                 Grid.Row="1"
                                 Style="{StaticResource ModernDatePicker}"
-                                SelectedDate="{Binding LastMaintenance, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedDate="{Binding LastMaintenance, UpdateSourceTrigger=PropertyChanged, StringFormat='MM/dd/yyyy'}"
+                                Language="en-US"
                                 />
                         </Grid>
                     </StackPanel>
