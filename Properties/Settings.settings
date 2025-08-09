@@ -1,0 +1,19 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings"
+              CurrentProfile="(Default)">
+    <Profiles />
+    <Settings>
+        <Setting Name="CMM" Type="System.String" Scope="User">
+            <Value Profile="(Default)">33-51-17</Value>
+        </Setting>
+        <Setting Name="TestNumber" Type="System.UInt64" Scope="User">
+            <Value Profile="(Default)">1</Value>
+        </Setting>
+        <Setting Name="TechnicianName" Type="System.String" Scope="User">
+            <Value Profile="(Default)"/>
+        </Setting>
+        <Setting Name="TechnicianStamp" Type="System.Int32" Scope="User">
+            <Value Profile="(Default)">1</Value>
+        </Setting>
+    </Settings>
+</SettingsFile>

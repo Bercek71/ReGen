@@ -1,29 +1,65 @@
 ﻿using System.ComponentModel;
+using System.Globalization;
+using System.IO;
 using System.Windows;
 
 using System.Windows.Input;
 using Microsoft.Win32;
 using QuestPDF.Fluent;
 using ReGen.Extensions;
-using static ReGen.Generators.PdfGenerator;
+using ReGen.Generators;
+using ReGen.Validation;
 
 namespace ReGen.ViewModels;
 
 public class MainViewModel : BaseViewModel
 {
-    private string _userName = string.Empty;
+    private string _technicianName = Properties.Settings_Designer.Default.TechnicianName;
     private string _csvFilePath = string.Empty;
-
-    public string UserName
+    
+    private int? TechnicianStamp
     {
-        get => _userName;
-        set { _userName = value; OnPropertyChanged(); }
+        get
+        {
+
+            if (!int.TryParse(_technicianStampDisplay, out var result))
+            {
+                return result;
+            }
+
+            return null;
+        }
+
+    }
+    
+    private string _technicianStampDisplay = Properties.Settings_Designer.Default.TechnicianStamp.ToString();
+
+    public string TechnicianStampDisplay
+    {
+        get => _technicianStampDisplay;
+        set
+        {
+            if (_technicianStampDisplay == value) return;
+            _technicianStampDisplay = value;
+            OnPropertyChanged();
+        }
+    }
+
+
+
+    public string TechnicianName
+    {
+        get => _technicianName;
+        set
+        {
+            _technicianName = value; OnPropertyChanged();
+        }
     }
 
     public string CsvFilePath
     {
         get => _csvFilePath;
-        set { _csvFilePath = value;
+        private set { _csvFilePath = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(CsvFilePathDisplay));
         }
@@ -45,12 +81,19 @@ public class MainViewModel : BaseViewModel
     public ICommand BrowseCsvCommand { get; }
     public ICommand GenerateReportCommand { get; }
     public ICommand ExitAppCommand { get; }
-
+    
     public MainViewModel()
     {
         BrowseCsvCommand = new RelayCommand(BrowseCsvFile);
         GenerateReportCommand = new RelayCommand(GenerateReport);
         ExitAppCommand = new RelayCommand(_ => Application.Current.Shutdown());
+    }
+
+    private void ExitApp(object? _)
+    {
+        Properties.Settings_Designer.Default.TechnicianName = TechnicianName;
+        if (TechnicianStamp != null) Properties.Settings_Designer.Default.TechnicianStamp = TechnicianStamp.Value;
+        Properties.Settings_Designer.Default.Save();
     }
 
     private void BrowseCsvFile(object? _)
@@ -73,9 +116,15 @@ public class MainViewModel : BaseViewModel
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(UserName))
+        if (string.IsNullOrWhiteSpace(TechnicianName))
         {
             MessageBox.Show("Please enter your name.", "Missing Name", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        if (!TechnicianStamp.HasValue)
+        {
+            MessageBox.Show("Please enter your support stamp.", "Missing Stamp", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
         
@@ -84,7 +133,13 @@ public class MainViewModel : BaseViewModel
     
     private void PreviewReport(object _)
     {
-        var doc = GeneratePdfReport(UserName, CsvFilePath);
-        doc.GeneratePdfAndShow();
+        if (!File.Exists(CsvFilePath))
+        {
+            MessageBox.Show("CSV file does not exist.", "Missing File", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+        var reportDocument = new ReportDocument(CsvFilePath, Properties.Settings_Designer.Default.TestNumber);
+        reportDocument.SaveFileAndShowDefault($"Test - {Properties.Settings_Designer.Default.TestNumber.ToString()}");
+        Properties.Settings_Designer.Default.TestNumber++;
+        Properties.Settings_Designer.Default.Save();
     }
 }
