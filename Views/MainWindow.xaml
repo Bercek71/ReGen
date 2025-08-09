@@ -4,8 +4,8 @@
         xmlns:viewModels="clr-namespace:ReGen.ViewModels"
         xmlns:validation="clr-namespace:ReGen.Validation"
         Title="CSV Report Generator"
-        Width="640" Height="725"
-        MinWidth="500" MinHeight="400"
+        Width="900" Height="900"
+        MinWidth="800" MinHeight="600"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -88,15 +88,16 @@
 
             <!-- Main Content -->
             <ScrollViewer Grid.Row="1" 
+                          Focusable="False"
                           VerticalScrollBarVisibility="Auto"
                           HorizontalScrollBarVisibility="Disabled"
                           Padding="1,32,1,8"
                           >
                 <StackPanel 
-                    MaxWidth="500"
-                            HorizontalAlignment="Center">
+                    Width="650"
+                    HorizontalAlignment="Center">
 
-                    <!-- Name Input Section -->
+                    <!-- Top Row: Technician, Stamp, Work Order -->
                     <StackPanel Style="{StaticResource InputGroup}">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -104,37 +105,129 @@
                                 <RowDefinition />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition />
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
+                            
                             <TextBlock Grid.Column="0" Grid.Row="0" Text="Technician" Style="{StaticResource FormLabel}"/>
-                        <TextBox
-                            Grid.Column="0"
-                            Grid.Row="1"
-                            HorizontalScrollBarVisibility="Disabled"
-                            Text="{Binding TechnicianName, UpdateSourceTrigger=PropertyChanged}" 
-                            Style="{StaticResource ModernTextBox}"
-                            />
-                            
-                            <TextBlock Padding="2, 0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1" Text="/"/>
+                            <TextBox
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                HorizontalScrollBarVisibility="Disabled"
+                                Text="{Binding TechnicianName, UpdateSourceTrigger=PropertyChanged}" 
+                                Style="{StaticResource ModernTextBox}"
+                                />
 
-                        <TextBlock Grid.Row="0" Grid.Column="2" Text="Stamp" Style="{StaticResource FormLabel}"/>
-                        <TextBox
-                            Grid.Column="2"
-                            Grid.Row="1"
-                            HorizontalScrollBarVisibility="Disabled"
-                            
-                            Style="{StaticResource ModernTextBox}">
-                            <TextBox.Text>
-                                <Binding Path="TechnicianStampDisplay" UpdateSourceTrigger="PropertyChanged" 
-                                         Mode="TwoWay">
-                                    <Binding.ValidationRules>
-                                        <validation:IntValidationRule />
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </TextBox.Text>                            
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Stamp" Style="{StaticResource FormLabel}"/>
+                            <TextBox
+                                Grid.Column="2"
+                                Grid.Row="1"
+                                HorizontalScrollBarVisibility="Disabled"
+                                Style="{StaticResource ModernTextBox}">
+                                <TextBox.Text>
+                                    <Binding Path="TechnicianStampDisplay" UpdateSourceTrigger="PropertyChanged" 
+                                             Mode="TwoWay">
+                                        <Binding.ValidationRules>
+                                            <validation:IntValidationRule />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>                            
                             </TextBox>
+
+                            <TextBlock Grid.Column="4" Grid.Row="0" Text="Work Order" Style="{StaticResource FormLabel}"/>
+                            <TextBox
+                                Grid.Column="4"
+                                Grid.Row="1"
+                                HorizontalScrollBarVisibility="Disabled"
+                                Style="{StaticResource ModernTextBox}"
+                                />
+                                <!-- Text="{Binding WorkOrder, UpdateSourceTrigger=PropertyChanged}"  -->
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Middle Row: Maintenance Count, Last Maintenance -->
+                    <StackPanel Style="{StaticResource InputGroup}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="24" />
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Maintenance Count" Style="{StaticResource FormLabel}"/>
+                            <TextBox
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                HorizontalScrollBarVisibility="Disabled"
+                                Style="{StaticResource ModernTextBox}">
+                                <!-- <TextBox.Text> -->
+                                <!--     <Binding Path="MaintenanceCount" UpdateSourceTrigger="PropertyChanged"  -->
+                                <!--              Mode="TwoWay"> -->
+                                <!--         <Binding.ValidationRules> -->
+                                <!--             <validation:IntValidationRule /> -->
+                                <!--         </Binding.ValidationRules> -->
+                                <!--     </Binding> -->
+                                <!-- </TextBox.Text>                             -->
+                            </TextBox>
+
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Last Maintenance" Style="{StaticResource FormLabel}"/>
+                            <DatePicker
+                                Grid.Column="2"
+                                Grid.Row="1"
+                                Style="{StaticResource ModernDatePicker}"
+                                />
+                                <!-- SelectedDate="{Binding LastMaintenance, UpdateSourceTrigger=PropertyChanged}" -->
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Bottom Row: ACSN, S.N., C.M.M (všechny tři vedle sebe) -->
+                    <StackPanel Style="{StaticResource InputGroup}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="AC/SN" Style="{StaticResource FormLabel}"/>
+                            <TextBox
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                HorizontalScrollBarVisibility="Disabled"
+                                Style="{StaticResource ModernTextBox}"
+                                />
+                                <!-- Text="{Binding Acsn, UpdateSourceTrigger=PropertyChanged}"  -->
+
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Serial Number" Style="{StaticResource FormLabel}"/>
+                            <TextBox
+                                Grid.Column="2"
+                                Grid.Row="1"
+                                HorizontalScrollBarVisibility="Disabled"
+                                Style="{StaticResource ModernTextBox}"
+                                />
+                                <!-- Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}"  -->
+
+                            <TextBlock Grid.Row="0" Grid.Column="4" Text="C.M.M." Style="{StaticResource FormLabel}"/>
+                            <TextBox
+                                Grid.Column="4"
+                                Grid.Row="1"
+                                HorizontalScrollBarVisibility="Disabled"
+                                Style="{StaticResource ModernTextBox}"
+                                />
+                                <!-- Text="{Binding Cmm, UpdateSourceTrigger=PropertyChanged}"  -->
                         </Grid>
                     </StackPanel>
 
@@ -212,8 +305,6 @@
 
                 </StackPanel>
             </ScrollViewer>
-
-
 
             <!-- Footer -->
             <Border Grid.Row="2"

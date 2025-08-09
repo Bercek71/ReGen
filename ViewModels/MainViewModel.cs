@@ -22,7 +22,7 @@ public class MainViewModel : BaseViewModel
         get
         {
 
-            if (!int.TryParse(_technicianStampDisplay, out var result))
+            if (int.TryParse(_technicianStampDisplay, out var result))
             {
                 return result;
             }
@@ -86,7 +86,7 @@ public class MainViewModel : BaseViewModel
     {
         BrowseCsvCommand = new RelayCommand(BrowseCsvFile);
         GenerateReportCommand = new RelayCommand(GenerateReport);
-        ExitAppCommand = new RelayCommand(_ => Application.Current.Shutdown());
+        ExitAppCommand = new RelayCommand(ExitApp);
     }
 
     private void ExitApp(object? _)
@@ -94,6 +94,7 @@ public class MainViewModel : BaseViewModel
         Properties.Settings_Designer.Default.TechnicianName = TechnicianName;
         if (TechnicianStamp != null) Properties.Settings_Designer.Default.TechnicianStamp = TechnicianStamp.Value;
         Properties.Settings_Designer.Default.Save();
+        Application.Current.Shutdown();
     }
 
     private void BrowseCsvFile(object? _)
