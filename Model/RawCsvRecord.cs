@@ -11,5 +11,5 @@ public class RawCsvRecord
     public string Wh { get; set; } = null!;
     public string TotalTime { get; set; } = null!;
     public string FunctionName { get; set; } = null!;
-    public string Result  { get; set; } = null!;
+    public string Result { get; set; } = null!;
 }

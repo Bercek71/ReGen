@@ -1,46 +1,54 @@
-﻿using System.ComponentModel;
-using System.Globalization;
-using System.IO;
+﻿using System.IO;
 using System.Windows;
-
 using System.Windows.Input;
 using Microsoft.Win32;
-using QuestPDF.Fluent;
 using ReGen.Extensions;
 using ReGen.Generators;
 using ReGen.Model;
-using ReGen.Validation;
+using ReGen.Properties;
 
 namespace ReGen.ViewModels;
 
 public class MainViewModel : BaseViewModel
 {
-    private string _technicianName = Properties.Settings_Designer.Default.TechnicianName;
+    private string _acsn = Settings_Designer.Default.ACSN;
+    private string _cmm = Settings_Designer.Default.CMM;
     private string _csvFilePath = string.Empty;
-    
+    private bool _isGenerateButtonEnabled = true;
+    private bool _isRestrictedFieldEditEnabled;
+    private DateTime _lastMaintenance = Settings_Designer.Default.LastMaintenance;
+    private string _lockButtonContent = LockContent.Lock;
+    private string _maintenanceCountDisplay = Settings_Designer.Default.MaintenanceCount.ToString();
+    private string _serialNumber = Settings_Designer.Default.SerialNumber;
+    private string _technicianName = Settings_Designer.Default.TechnicianName;
+
+    private string _technicianStampDisplay = Settings_Designer.Default.TechnicianStamp.ToString();
+    private string _workOrder = Settings_Designer.Default.WorkOrder;
+
+    public MainViewModel()
+    {
+        BrowseCsvCommand = new RelayCommand(BrowseCsvFile);
+        GenerateReportCommand = new RelayCommand(GenerateReport);
+        ExitAppCommand = new RelayCommand(_ => Application.Current.Shutdown());
+        OnLockClickCommand = new RelayCommand(LockClickHandler);
+    }
+
     private int? TechnicianStamp
     {
         get
         {
-            if (int.TryParse(_technicianStampDisplay, out var result))
-            {
-                return result;
-            }
+            if (int.TryParse(_technicianStampDisplay, out var result)) return result;
 
             return null;
         }
-
     }
-    
-    
+
+
     private int? MaintenanceCount
     {
         get
         {
-            if (int.TryParse(_maintenanceCountDisplay, out var result))
-            {
-                return result;
-            }
+            if (int.TryParse(_maintenanceCountDisplay, out var result)) return result;
 
             return null;
         }
@@ -57,16 +65,6 @@ public class MainViewModel : BaseViewModel
         }
     }
 
-    private string _technicianStampDisplay = Properties.Settings_Designer.Default.TechnicianStamp.ToString();
-    private string _lockButtonContent = LockContent.Lock;
-    private bool _isRestrictedFieldEditEnabled = false;
-    private string _cmm = Properties.Settings_Designer.Default.CMM;
-    private string _serialNumber = Properties.Settings_Designer.Default.SerialNumber;
-    private string _acsn = Properties.Settings_Designer.Default.ACSN;
-    private string _workOrder = Properties.Settings_Designer.Default.WorkOrder;
-    private DateTime _lastMaintenance = Properties.Settings_Designer.Default.LastMaintenance;
-    private string _maintenanceCountDisplay = Properties.Settings_Designer.Default.MaintenanceCount.ToString();
-
     public string TechnicianStampDisplay
     {
         get => _technicianStampDisplay;
@@ -76,11 +74,10 @@ public class MainViewModel : BaseViewModel
             _technicianStampDisplay = value;
             OnPropertyChanged();
             if (!int.TryParse(value, out var result)) return;
-            Properties.Settings_Designer.Default.TechnicianStamp = result;
-            Properties.Settings_Designer.Default.Save();
+            Settings_Designer.Default.TechnicianStamp = result;
+            Settings_Designer.Default.Save();
         }
     }
-
 
 
     public string TechnicianName
@@ -88,21 +85,24 @@ public class MainViewModel : BaseViewModel
         get => _technicianName;
         set
         {
-            _technicianName = value; OnPropertyChanged();
-            Properties.Settings_Designer.Default.TechnicianName = value;
-            Properties.Settings_Designer.Default.Save();
+            _technicianName = value;
+            OnPropertyChanged();
+            Settings_Designer.Default.TechnicianName = value;
+            Settings_Designer.Default.Save();
         }
     }
 
     public string CsvFilePath
     {
         get => _csvFilePath;
-        private set { _csvFilePath = value;
+        private set
+        {
+            _csvFilePath = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(CsvFilePathDisplay));
         }
     }
-    
+
     public string CsvFilePathDisplay
     {
         get
@@ -111,7 +111,7 @@ public class MainViewModel : BaseViewModel
             if (string.IsNullOrWhiteSpace(_csvFilePath)) return string.Empty;
 
             return _csvFilePath.Length > maxLength
-                ? "..." + _csvFilePath[^maxLength..]  // Show only the end
+                ? "..." + _csvFilePath[^maxLength..] // Show only the end
                 : _csvFilePath;
         }
     }
@@ -141,8 +141,8 @@ public class MainViewModel : BaseViewModel
             if (value == _cmm) return;
             _cmm = value;
             OnPropertyChanged();
-            Properties.Settings_Designer.Default.CMM = value;
-            Properties.Settings_Designer.Default.Save();
+            Settings_Designer.Default.CMM = value;
+            Settings_Designer.Default.Save();
         }
     }
 
@@ -154,8 +154,8 @@ public class MainViewModel : BaseViewModel
             if (value == _serialNumber) return;
             _serialNumber = value;
             OnPropertyChanged();
-            Properties.Settings_Designer.Default.SerialNumber = value;
-            Properties.Settings_Designer.Default.Save();
+            Settings_Designer.Default.SerialNumber = value;
+            Settings_Designer.Default.Save();
         }
     }
 
@@ -167,8 +167,8 @@ public class MainViewModel : BaseViewModel
             if (value == _acsn) return;
             _acsn = value;
             OnPropertyChanged();
-            Properties.Settings_Designer.Default.ACSN = value;
-            Properties.Settings_Designer.Default.Save();
+            Settings_Designer.Default.ACSN = value;
+            Settings_Designer.Default.Save();
         }
     }
 
@@ -180,14 +180,14 @@ public class MainViewModel : BaseViewModel
             if (value.Equals(_lastMaintenance)) return;
             _lastMaintenance = value;
             OnPropertyChanged();
-            Properties.Settings_Designer.Default.LastMaintenance = value;
-            Properties.Settings_Designer.Default.Save();
+            Settings_Designer.Default.LastMaintenance = value;
+            Settings_Designer.Default.Save();
         }
     }
 
     public string MaintenanceCountDisplay
-    
-    
+
+
     {
         get => _maintenanceCountDisplay;
         set
@@ -196,9 +196,8 @@ public class MainViewModel : BaseViewModel
             _maintenanceCountDisplay = value;
             OnPropertyChanged();
             if (!int.TryParse(value, out var result)) return;
-            Properties.Settings_Designer.Default.MaintenanceCount = result;
-            Properties.Settings_Designer.Default.Save();
-            
+            Settings_Designer.Default.MaintenanceCount = result;
+            Settings_Designer.Default.Save();
         }
     }
 
@@ -210,17 +209,20 @@ public class MainViewModel : BaseViewModel
             if (value == _workOrder) return;
             _workOrder = value;
             OnPropertyChanged();
-            Properties.Settings_Designer.Default.WorkOrder = value;
-            Properties.Settings_Designer.Default.Save();
+            Settings_Designer.Default.WorkOrder = value;
+            Settings_Designer.Default.Save();
         }
     }
 
-    public MainViewModel()
+    public bool IsGenerateButtonEnabled
     {
-        BrowseCsvCommand = new RelayCommand(BrowseCsvFile);
-        GenerateReportCommand = new RelayCommand(GenerateReport);
-        ExitAppCommand = new RelayCommand(ExitApp);
-        OnLockClickCommand = new RelayCommand(LockClickHandler);
+        get => _isGenerateButtonEnabled;
+        set
+        {
+            if (value == _isGenerateButtonEnabled) return;
+            _isGenerateButtonEnabled = value;
+            OnPropertyChanged();
+        }
     }
 
     private void LockClickHandler(object? _)
@@ -237,11 +239,6 @@ public class MainViewModel : BaseViewModel
         }
     }
 
-    private void ExitApp(object? _)
-    {
-        Application.Current.Shutdown();
-    }
-
     private void BrowseCsvFile(object? _)
     {
         var dialog = new OpenFileDialog
@@ -256,6 +253,7 @@ public class MainViewModel : BaseViewModel
 
     private void GenerateReport(object? _)
     {
+        IsGenerateButtonEnabled = false;
         if (string.IsNullOrWhiteSpace(CsvFilePath))
         {
             MessageBox.Show("Please select a CSV file.", "Missing File", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -270,20 +268,24 @@ public class MainViewModel : BaseViewModel
 
         if (!TechnicianStamp.HasValue)
         {
-            MessageBox.Show("Please enter your support stamp.", "Missing Stamp", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show("Please enter your support stamp.", "Missing Stamp", MessageBoxButton.OK,
+                MessageBoxImage.Warning);
             return;
         }
-        
+
         PreviewReport(null!);
-        
+
+        Task.Run(async () =>
+        {
+            await Task.Delay(500);
+            IsGenerateButtonEnabled = true;
+        });
     }
-    
+
     private void PreviewReport(object _)
     {
         if (!File.Exists(CsvFilePath))
-        {
             MessageBox.Show("CSV file does not exist.", "Missing File", MessageBoxButton.OK, MessageBoxImage.Warning);
-        }
         // var reportDocument = new ReportDocument(CsvFilePath, Properties.Settings_Designer.Default.TestNumber);
         // reportDocument.SaveFileAndShowDefault($"Test - {Properties.Settings_Designer.Default.TestNumber.ToString()}");
         try
@@ -292,34 +294,38 @@ public class MainViewModel : BaseViewModel
                 .ReadCsvFile(CsvFilePath)
                 .ToList();
 
-            var path = "C:\\Users\\marek.beran\\Desktop\\Chartts\\chart.png";
-            var pdfData = new PdfData()
+            var pdfData = new PdfData(records)
             {
                 Cmm = Cmm,
                 Ah = 1.51651,
-                EndVoltage = 54.15616,
-                StartAmp = 51.1561,
+
                 LastMaintenance = LastMaintenance,
                 SerialNumber = SerialNumber,
                 TechnicianName = TechnicianName,
                 Acsn = Acsn,
                 WorkOrder = WorkOrder,
-                StartVoltage = 31.23123,
                 TechnicianStamp = TechnicianStamp ?? 0,
-                TestDuration = TimeSpan.FromHours(1),
-                Cn = 31.21,
-                EndAmp = 31.213,
-                MaintenanceCount = MaintenanceCount ?? 0
+                MaintenanceCount = MaintenanceCount ?? 0,
+
+                Cn = 31.21
             };
-            PlotGenerator.GeneratePlot(records, path);
-            var reportDocument = new ReportDocument(path, Properties.Settings_Designer.Default.TestNumber, pdfData);
-            reportDocument.SaveFileAndShowDefault("test");
-            Properties.Settings_Designer.Default.TestNumber++;
-            Properties.Settings_Designer.Default.Save();
+
+            var testNumber = Settings_Designer.Default.TestNumber;
+
+            var chartPath = Path.Combine(TmpHelper.ChartsDirectoryPath,
+                $"{testNumber}.png");
+
+            PlotGenerator.GeneratePlot(records, chartPath);
+            var reportDocument = new ReportDocument(chartPath, testNumber, pdfData);
+            reportDocument.SaveFileAndShowDefault($"Test {testNumber}");
+
+            Settings_Designer.Default.TestNumber++;
+            Settings_Designer.Default.Save();
         }
         catch (Exception ex)
         {
-            MessageBox.Show("Csv file format error: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show("Csv file format error: " + ex.Message, "Error", MessageBoxButton.OK,
+                MessageBoxImage.Error);
         }
     }
 }

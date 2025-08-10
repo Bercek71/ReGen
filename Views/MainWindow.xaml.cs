@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using ReGen.ViewModels;
 
@@ -16,13 +15,11 @@ public partial class MainWindow : Window
     private void DragWindow(object sender, MouseButtonEventArgs e)
     {
         if (e.LeftButton == MouseButtonState.Pressed)
-            this.DragMove();
+            DragMove();
     }
 
     private void MainWindow_OnStateChanged(object? sender, EventArgs e)
     {
-        if (this.WindowState == WindowState.Maximized)
-        {
-            this.WindowState = WindowState.Normal;
-        }    }
+        if (WindowState == WindowState.Maximized) WindowState = WindowState.Normal;
+    }
 }

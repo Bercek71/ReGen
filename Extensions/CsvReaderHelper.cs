@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.IO;
 using CsvHelper;
+using CsvHelper.Configuration;
 using ReGen.Model;
 
 namespace ReGen.Extensions;
@@ -9,11 +10,11 @@ public static class CsvReaderHelper
 {
     public static IEnumerable<CsvRecord> ReadCsvFile(string csvFilePath)
     {
-        var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
-            Delimiter = "\t",  // tab-delimited
+            Delimiter = "\t", // tab-delimited
             IgnoreBlankLines = true,
-            TrimOptions = CsvHelper.Configuration.TrimOptions.Trim,
+            TrimOptions = TrimOptions.Trim
         };
         // Read CSV
         List<RawCsvRecord> records;
@@ -25,5 +26,4 @@ public static class CsvReaderHelper
 
         return records.Select(record => new CsvRecord(record));
     }
-    
 }

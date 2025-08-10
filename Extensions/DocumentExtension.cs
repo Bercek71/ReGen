@@ -9,21 +9,14 @@ public static class DocumentExtension
 {
     public static void SaveFileAndShowDefault(this IDocument document, string fileName)
     {
+        var directory = TmpHelper.DocumentDirectoryPath;
 
-        var directory = Path.Combine(Path.GetTempPath(), "ReGenDocuments");
-        
         var path = Path.Combine(directory, $"{Path.GetFileNameWithoutExtension(fileName)}.pdf");
 
-        if (!Directory.Exists(directory))
-        {
-            Directory.CreateDirectory(directory);
-        }
+        if (!Directory.Exists(directory)) throw new InvalidOperationException("Document directory doesn't exist");
 
         var bytes = document.GeneratePdf();
-        if (!File.Exists(path))
-        {
-            File.Create(path).Close();
-        }
+        if (!File.Exists(path)) File.Create(path).Close();
         File.WriteAllBytes(path, bytes);
         var process = new Process
         {
@@ -35,7 +28,5 @@ public static class DocumentExtension
 
         process.Start();
         process.WaitForExit();
-        
     }
-    
 }

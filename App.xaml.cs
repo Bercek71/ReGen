@@ -1,4 +1,5 @@
 ﻿using QuestPDF.Infrastructure;
+using ReGen.Extensions;
 
 namespace ReGen;
 
@@ -10,5 +11,8 @@ public partial class App
     public App()
     {
         QuestPDF.Settings.License = LicenseType.Community;
+        TmpHelper.InitializeTmpWorkSpace();
+        TmpHelper.ClearChartsDirectory();
+        TmpHelper.ClearMonthOldDocuments();
     }
 }

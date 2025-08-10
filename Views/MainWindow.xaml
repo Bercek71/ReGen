@@ -13,25 +13,24 @@
         FontFamily="Segoe UI Variable, Segoe UI, Arial"
         RenderOptions.BitmapScalingMode="HighQuality"
         ResizeMode="CanResize"
-        StateChanged="MainWindow_OnStateChanged"
-        >
-        <!-- UseLayoutRounding="True" -->
-        <!-- RenderOptions.EdgeMode="Aliased" -->
-        <Window.DataContext>
-            <viewModels:MainViewModel />
-        </Window.DataContext>
+        StateChanged="MainWindow_OnStateChanged">
+    <!-- UseLayoutRounding="True" -->
+    <!-- RenderOptions.EdgeMode="Aliased" -->
+    <Window.DataContext>
+        <viewModels:MainViewModel />
+    </Window.DataContext>
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Style/Styles.xaml"/>
+                <ResourceDictionary Source="/Style/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <!-- Glassmorphism Effect for Header -->
             <LinearGradientBrush x:Key="HeaderGradient" StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#FF6366F1" Offset="0"/>
-                <GradientStop Color="#FF8B5CF6" Offset="0.5"/>
-                <GradientStop Color="#FFEC4899" Offset="1"/>
+                <GradientStop Color="#FF6366F1" Offset="0" />
+                <GradientStop Color="#FF8B5CF6" Offset="0.5" />
+                <GradientStop Color="#FFEC4899" Offset="1" />
             </LinearGradientBrush>
         </ResourceDictionary>
     </Window.Resources>
@@ -41,24 +40,24 @@
             Background="{StaticResource BackgroundBrush}"
             Effect="{StaticResource WindowShadow}"
             MouseLeftButtonDown="DragWindow">
-        
+
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <!-- Header Section with Gradient -->
-            <Border Grid.Row="0" 
+            <Border Grid.Row="0"
                     Background="{StaticResource HeaderGradient}"
                     CornerRadius="16,16,0,0"
                     Margin="-32,-32,-32,0"
                     Padding="32,24,32,32">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
                     <!-- Header Content -->
@@ -66,43 +65,41 @@
                         <TextBlock Text="CSV Report Generator"
                                    FontSize="24" FontWeight="Bold"
                                    Foreground="White"
-                                   Margin="0,0,0,4"/>
+                                   Margin="0,0,0,4" />
                         <TextBlock Text="Transform your data into beautiful reports"
                                    FontSize="14"
                                    Foreground="#FFFFFF90"
-                                   FontWeight="Normal"/>
+                                   FontWeight="Normal" />
                     </StackPanel>
 
                     <!-- Window Controls -->
-                    <StackPanel Grid.Column="1" 
-                                Orientation="Horizontal" 
+                    <StackPanel Grid.Column="1"
+                                Orientation="Horizontal"
                                 VerticalAlignment="Top"
                                 HorizontalAlignment="Right">
                         <Button Content="✕"
                                 Style="{StaticResource CloseButton}"
                                 Background="Red"
                                 Foreground="White"
-                                Command="{Binding ExitAppCommand}"/>
+                                Command="{Binding ExitAppCommand}" />
                     </StackPanel>
                 </Grid>
             </Border>
-            
 
 
             <!-- Main Content -->
-            <ScrollViewer Grid.Row="1" 
+            <ScrollViewer Grid.Row="1"
                           Focusable="False"
                           VerticalScrollBarVisibility="Auto"
                           HorizontalScrollBarVisibility="Disabled"
-                          Padding="1,15,1,8"
-                          >
-                
-                <StackPanel 
+                          Padding="1,15,1,8">
+
+                <StackPanel
                     Width="650"
                     HorizontalAlignment="Center">
-                    
-                    
-                    <Button  Content="{Binding LockButtonContent}"
+
+
+                    <Button Content="{Binding LockButtonContent}"
                             Width="32" Height="32"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
@@ -111,8 +108,7 @@
                             BorderBrush="Transparent"
                             Cursor="Hand"
                             ToolTip="Lock/Unlock"
-                            Command="{Binding OnLockClickCommand}"
-                    />
+                            Command="{Binding OnLockClickCommand}" />
 
 
                     <!-- Top Row: Technician, Stamp, Work Order -->
@@ -123,46 +119,46 @@
                                 <RowDefinition />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*" />
                                 <ColumnDefinition Width="16" />
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="16" />
-                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*" />
                             </Grid.ColumnDefinitions>
-                            
-                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Technician" Style="{StaticResource FormLabel}"/>
+
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Technician"
+                                       Style="{StaticResource FormLabel}" />
                             <TextBox
                                 Grid.Column="0"
                                 Grid.Row="1"
                                 HorizontalScrollBarVisibility="Disabled"
-                                Text="{Binding TechnicianName, UpdateSourceTrigger=PropertyChanged}" 
-                                Style="{StaticResource ModernTextBox}"
-                                />
+                                Text="{Binding TechnicianName, UpdateSourceTrigger=PropertyChanged}"
+                                Style="{StaticResource ModernTextBox}" />
 
-                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Stamp" Style="{StaticResource FormLabel}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Stamp" Style="{StaticResource FormLabel}" />
                             <TextBox
                                 Grid.Column="2"
                                 Grid.Row="1"
                                 HorizontalScrollBarVisibility="Disabled"
                                 Style="{StaticResource ModernTextBox}">
                                 <TextBox.Text>
-                                    <Binding Path="TechnicianStampDisplay" UpdateSourceTrigger="PropertyChanged" 
+                                    <Binding Path="TechnicianStampDisplay" UpdateSourceTrigger="PropertyChanged"
                                              Mode="TwoWay">
                                         <Binding.ValidationRules>
                                             <validation:IntValidationRule />
                                         </Binding.ValidationRules>
                                     </Binding>
-                                </TextBox.Text>                            
+                                </TextBox.Text>
                             </TextBox>
 
-                            <TextBlock Grid.Column="4" Grid.Row="0" Text="Work Order" Style="{StaticResource FormLabel}"/>
+                            <TextBlock Grid.Column="4" Grid.Row="0" Text="Work Order"
+                                       Style="{StaticResource FormLabel}" />
                             <TextBox
                                 Grid.Column="4"
                                 Grid.Row="1"
                                 HorizontalScrollBarVisibility="Disabled"
                                 Style="{StaticResource ModernTextBox}"
-                                Text="{Binding WorkOrder, UpdateSourceTrigger=PropertyChanged}"
-                                />
+                                Text="{Binding WorkOrder, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
                     </StackPanel>
 
@@ -174,12 +170,13 @@
                                 <RowDefinition />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="24" />
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            
-                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Maintenance Count" Style="{StaticResource FormLabel}"/>
+
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Maintenance Count"
+                                       Style="{StaticResource FormLabel}" />
                             <TextBox
                                 Grid.Column="0"
                                 Grid.Row="1"
@@ -195,14 +192,14 @@
                                 </TextBox.Text>
                             </TextBox>
 
-                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Last Maintenance" Style="{StaticResource FormLabel}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Last Maintenance"
+                                       Style="{StaticResource FormLabel}" />
                             <DatePicker
                                 Grid.Column="2"
                                 Grid.Row="1"
                                 Style="{StaticResource ModernDatePicker}"
                                 SelectedDate="{Binding LastMaintenance, UpdateSourceTrigger=PropertyChanged, StringFormat='MM/dd/yyyy'}"
-                                Language="en-US"
-                                />
+                                Language="en-US" />
                         </Grid>
                     </StackPanel>
 
@@ -214,68 +211,66 @@
                                 <RowDefinition />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="16" />
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="16" />
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            
-                            <TextBlock Grid.Column="0" Grid.Row="0" Text="AC/SN" Style="{StaticResource FormLabel}"/>
+
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="AC/SN" Style="{StaticResource FormLabel}" />
                             <TextBox
                                 Grid.Column="0"
                                 Grid.Row="1"
                                 HorizontalScrollBarVisibility="Disabled"
                                 Style="{StaticResource ModernTextBox}"
-                                Text="{Binding Acsn, UpdateSourceTrigger=PropertyChanged}"
-                                />
+                                Text="{Binding Acsn, UpdateSourceTrigger=PropertyChanged}" />
 
-                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Serial Number" Style="{StaticResource FormLabel}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Serial Number"
+                                       Style="{StaticResource FormLabel}" />
                             <TextBox
                                 Grid.Column="2"
                                 Grid.Row="1"
                                 HorizontalScrollBarVisibility="Disabled"
                                 Style="{StaticResource ModernTextBox}"
-                                Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}"
-                                />
+                                Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}" />
 
-                            <TextBlock Grid.Row="0" Grid.Column="4" Text="C.M.M." Style="{StaticResource FormLabel}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="4" Text="C.M.M." Style="{StaticResource FormLabel}" />
                             <TextBox
                                 Grid.Column="4"
                                 Grid.Row="1"
                                 HorizontalScrollBarVisibility="Disabled"
                                 IsEnabled="{Binding IsRestrictedFieldEditEnabled}"
                                 Style="{StaticResource ModernTextBox}"
-                                Text="{Binding Cmm, UpdateSourceTrigger=PropertyChanged}"
-                                />
+                                Text="{Binding Cmm, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
                     </StackPanel>
 
                     <!-- CSV File Selection Section -->
                     <StackPanel Style="{StaticResource InputGroup}">
-                        <TextBlock Text="Select CSV File" Style="{StaticResource FormLabel}"/>
+                        <TextBlock Text="Select CSV File" Style="{StaticResource FormLabel}" />
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            
+
                             <TextBox
                                 Grid.Column="0"
-                                     Style="{StaticResource ModernTextBox}"
-                                     Text="{Binding CsvFilePathDisplay, Mode=OneWay}"
-                                     IsReadOnly="True"
-                                    TextWrapping="NoWrap"
-                                    ToolTip="{Binding CsvFilePath}"
-                                    HorizontalScrollBarVisibility="Disabled"
-                                     Foreground="{StaticResource TextMutedBrush}"
-                                     Margin="0,0,12,0"/>
-                            
+                                Style="{StaticResource ModernTextBox}"
+                                Text="{Binding CsvFilePathDisplay, Mode=OneWay}"
+                                IsReadOnly="True"
+                                TextWrapping="NoWrap"
+                                ToolTip="{Binding CsvFilePath}"
+                                HorizontalScrollBarVisibility="Disabled"
+                                Foreground="{StaticResource TextMutedBrush}"
+                                Margin="0,0,12,0" />
+
                             <Button Grid.Column="1"
                                     Content="📁 Browse"
                                     Style="{StaticResource SecondaryButton}"
                                     Command="{Binding BrowseCsvCommand}"
-                                    Margin="0"/>
+                                    Margin="0" />
                         </Grid>
                     </StackPanel>
 
@@ -311,17 +306,18 @@
                     <!-- </Border> -->
 
                     <!-- Action Buttons -->
-                    <StackPanel Orientation="Horizontal" 
+                    <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Center"
                                 Margin="0,16,0,0">
                         <Button Content="🚀 Generate Report"
+                                IsEnabled="{Binding IsGenerateButtonEnabled}"
                                 Style="{StaticResource SuccessButton}"
                                 Command="{Binding GenerateReportCommand}"
-                                MinWidth="160"/>
+                                MinWidth="160" />
                         <Button Content="❌ Exit"
                                 Style="{StaticResource DangerButton}"
                                 Command="{Binding ExitAppCommand}"
-                                MinWidth="100"/>
+                                MinWidth="100" />
                     </StackPanel>
 
                 </StackPanel>
@@ -338,12 +334,12 @@
                     BorderThickness="0,1,0,0">
                 <StackPanel HorizontalAlignment="Center">
                     <TextBlock Text="Made with ❤️ using WPF &amp; Modern Design"
-                               Style="{StaticResource Footer}"/>
+                               Style="{StaticResource Footer}" />
                     <TextBlock Text="v2.0.0 • Built for productivity"
                                FontSize="10"
                                Foreground="{StaticResource TextMutedBrush}"
                                HorizontalAlignment="Center"
-                               Margin="0,4,0,0"/>
+                               Margin="0,4,0,0" />
                 </StackPanel>
             </Border>
         </Grid>
