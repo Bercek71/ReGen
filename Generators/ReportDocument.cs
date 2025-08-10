@@ -217,7 +217,12 @@ public class ReportDocument : IDocument
                             outputVoltageTest.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
                         });
 
-                        right.Item().Row(capacityTest => { capacityTest.RelativeItem().Text("4. CAPACITY TEST"); });
+                        right.Item().Row(capacityTest =>
+                        {
+                            capacityTest.RelativeItem().Text("4. CAPACITY TEST");                            
+                            capacityTest.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
+                            capacityTest.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
+                        });
                     });
                 });
             });

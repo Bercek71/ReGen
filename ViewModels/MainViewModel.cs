@@ -17,6 +17,7 @@ public class MainViewModel : BaseViewModel
     private string _csvFilePath = string.Empty;
     private bool _isGenerateButtonEnabled = true;
     private bool _isRestrictedFieldEditEnabled;
+    private bool _isUpdating;
     private DateTime _lastMaintenance = Settings_Designer.Default.LastMaintenance;
     private string _lockButtonContent = LockContent.Lock;
     private string _maintenanceCountDisplay = Settings_Designer.Default.MaintenanceCount.ToString();
@@ -24,12 +25,9 @@ public class MainViewModel : BaseViewModel
     private string _technicianName = Settings_Designer.Default.TechnicianName;
 
     private string _technicianStampDisplay = Settings_Designer.Default.TechnicianStamp.ToString();
-    private string _workOrder = Settings_Designer.Default.WorkOrder;
     private Visibility _updateButtonVisibility = Visibility.Hidden;
-    private bool _isUpdating;
     private double _updateProgress;
-
-    private UpdateManager UpdateManager { get; }
+    private string _workOrder = Settings_Designer.Default.WorkOrder;
 
     public MainViewModel()
     {
@@ -38,12 +36,14 @@ public class MainViewModel : BaseViewModel
         ExitAppCommand = new RelayCommand(_ => Application.Current.Shutdown());
         OnLockClickCommand = new RelayCommand(LockClickHandler);
         UpdateCommand = new RelayCommand(UpdateCommandHandler);
-        
+
         const string repoUrl = "https://github.com/bercek71/ReGen/releases/latest/download";
         UpdateManager = new UpdateManager(repoUrl);
-        
+
         CheckForUpdate();
     }
+
+    private UpdateManager UpdateManager { get; }
 
     private int? TechnicianStamp
     {
@@ -125,22 +125,6 @@ public class MainViewModel : BaseViewModel
             return _csvFilePath.Length > maxLength
                 ? "..." + _csvFilePath[^maxLength..] // Show only the end
                 : _csvFilePath;
-        }
-    }
-
-    private async void CheckForUpdate()
-    {
-        try
-        {
-            var updateInfo = await UpdateManager.CheckForUpdatesAsync();
-            if (updateInfo != null)
-            {
-                UpdateButtonVisibility = Visibility.Visible;
-            }
-        }
-        catch (Exception)
-        {
-            // ignored
         }
     }
 
@@ -288,20 +272,29 @@ public class MainViewModel : BaseViewModel
         }
     }
 
+    private async void CheckForUpdate()
+    {
+        try
+        {
+            var updateInfo = await UpdateManager.CheckForUpdatesAsync();
+            if (updateInfo != null) UpdateButtonVisibility = Visibility.Visible;
+        }
+        catch (Exception)
+        {
+            // ignored
+        }
+    }
+
     private async void UpdateCommandHandler(object? _)
     {
-        var updateInfo =  await UpdateManager.CheckForUpdatesAsync();
+        var updateInfo = await UpdateManager.CheckForUpdatesAsync();
         if (updateInfo == null) return;
         IsUpdating = true;
         //Show window with progress bar
-        await UpdateManager.DownloadUpdatesAsync(updateInfo, i =>
-        {
-            UpdateProgress = i;
-        });
+        await UpdateManager.DownloadUpdatesAsync(updateInfo, i => { UpdateProgress = i; });
         var asset = UpdateManager.UpdatePendingRestart;
         IsUpdating = false;
         UpdateManager.ApplyUpdatesAndRestart(asset);
-        
     }
 
     private void LockClickHandler(object? _)
@@ -352,6 +345,36 @@ public class MainViewModel : BaseViewModel
             return;
         }
 
+        if (!MaintenanceCount.HasValue)
+        {
+            MessageBox.Show("Please enter maintenance count", "Missing Maintenance Count", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(Acsn))
+        {
+            MessageBox.Show("Please enter acs number", "Missing Acs Number", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(WorkOrder))
+        {
+            MessageBox.Show("Please enter work order", "Missing Work Order", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(Cmm))
+        {
+            MessageBox.Show("Please enter CMN", "Missing CMN", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(SerialNumber))
+        {
+            MessageBox.Show("Please enter SerialNumber", "Missing Serial number", MessageBoxButton.OK,  MessageBoxImage.Warning);
+            return;
+        }
+        
         PreviewReport(null!);
 
         Task.Run(async () =>
@@ -360,13 +383,14 @@ public class MainViewModel : BaseViewModel
             IsGenerateButtonEnabled = true;
         });
     }
+    
+    
 
     private void PreviewReport(object _)
     {
         if (!File.Exists(CsvFilePath))
             MessageBox.Show("CSV file does not exist.", "Missing File", MessageBoxButton.OK, MessageBoxImage.Warning);
-        // var reportDocument = new ReportDocument(CsvFilePath, Properties.Settings_Designer.Default.TestNumber);
-        // reportDocument.SaveFileAndShowDefault($"Test - {Properties.Settings_Designer.Default.TestNumber.ToString()}");
+
         try
         {
             var records = CsvReaderHelper
