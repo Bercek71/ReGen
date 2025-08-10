@@ -119,7 +119,7 @@ public class ReportDocument : IDocument
                 });
                 col.Item().Border(1, Colors.Black).AlignCenter().Padding(5).Column(dischargeInfoCol =>
                 {
-                    dischargeInfoCol.Item().Text("Discharge Constant Current 5.00A.").AlignCenter();
+                    dischargeInfoCol.Item().Text("Discharge Constant Current 6.00A.").AlignCenter();
                     dischargeInfoCol.Item().Text("Threshold: 00:40:00 Vmin=5V.Tmin=10°C Tmax=45°C").AlignCenter();
                 });
                 
@@ -140,7 +140,7 @@ public class ReportDocument : IDocument
                     workOrderRow.Item().Text("A/C S/N:    A/C REG:").Bold(); //.Text("03902 / VP - CAN");
                     workOrderRow.Item().PaddingBottom(10).Text(Properties.Settings_Designer.Default.ACSN);
 
-                    workOrderRow.Item().Text("TECHNICIAN/STAMP").Bold();
+                    workOrderRow.Item().Text("TECHNICIAN/STAMP:").Bold();
                     workOrderRow.Item().Text(
                         $"{Properties.Settings_Designer.Default.TechnicianName} / {Properties.Settings_Designer.Default.TechnicianStamp.ToString()}");
                 });
