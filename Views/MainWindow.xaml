@@ -85,7 +85,7 @@
                                 Background="LightSkyBlue"
                                 Foreground="White"
                                 ToolTip="Update"
-                                Command="{Binding ExitAppCommand}" />
+                                Command="{Binding UpdateCommand}" />
                         <Button Content="✕"
                                 Style="{StaticResource CloseButton}"
                                 Background="Red"

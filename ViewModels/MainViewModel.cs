@@ -26,6 +26,8 @@ public class MainViewModel : BaseViewModel
     private string _technicianStampDisplay = Settings_Designer.Default.TechnicianStamp.ToString();
     private string _workOrder = Settings_Designer.Default.WorkOrder;
     private Visibility _updateButtonVisibility = Visibility.Hidden;
+    
+    private UpdateManager UpdateManager { get; }
 
     public MainViewModel()
     {
@@ -33,6 +35,10 @@ public class MainViewModel : BaseViewModel
         GenerateReportCommand = new RelayCommand(GenerateReport);
         ExitAppCommand = new RelayCommand(_ => Application.Current.Shutdown());
         OnLockClickCommand = new RelayCommand(LockClickHandler);
+        UpdateCommand = new RelayCommand(UpdateCommandHandler);
+        
+        const string repoUrl = "https://github.com/bercek71/ReGen/releases/latest/download";
+        UpdateManager = new UpdateManager(repoUrl);
         
         CheckForUpdate();
     }
@@ -122,9 +128,18 @@ public class MainViewModel : BaseViewModel
 
     private async void CheckForUpdate()
     {
-        // https://github.com/bercek71/ReGen/releases/latest/download
-        // var mgr = new UpdateManager()
-
+        try
+        {
+            var updateInfo = await UpdateManager.CheckForUpdatesAsync();
+            if (updateInfo != null)
+            {
+                UpdateButtonVisibility = Visibility.Visible;
+            }
+        }
+        catch (Exception)
+        {
+            // ignored
+        }
     }
 
     public ICommand BrowseCsvCommand { get; }
@@ -244,6 +259,19 @@ public class MainViewModel : BaseViewModel
             if (value == _updateButtonVisibility) return;
             _updateButtonVisibility = value;
             OnPropertyChanged();
+        }
+    }
+
+    public ICommand UpdateCommand { get; }
+
+    private async void UpdateCommandHandler(object? _)
+    {
+        var updateInfo =  await UpdateManager.CheckForUpdatesAsync();
+        if (updateInfo != null)
+        {
+            await UpdateManager.DownloadUpdatesAsync(updateInfo);
+            var asset = UpdateManager.UpdatePendingRestart;
+            UpdateManager.ApplyUpdatesAndRestart(asset);
         }
     }
 

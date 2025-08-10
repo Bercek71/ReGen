@@ -4,20 +4,37 @@ setlocal enabledelayedexpansion
 :: Configuration - UPDATE THESE VALUES
 set "REPO_URL=https://github.com/Bercek71/ReGen"
 set "PROJECT_NAME=ReGen"
-set "PACK_ID=VelopackCSharpWpf"
+set "PACK_ID=ReGen"
 set "PROJECT_FILE=../ReGen.csproj"
 set "PUBLISH_DIR=%~dp0publish"
 set "RELEASES_DIR=%~dp0releases"
-set "FRAMEWORK=net9.0-windows"
+set "CHANNEL=win"
 
 :: Get version from command line argument
 if "%~1"=="" (
     echo Version number is required.
-    echo Usage: %~nx0 [version]
+    echo Usage: %~nx0 [version] [github_token]
     echo Example: %~nx0 1.0.0
+    echo Example: %~nx0 1.0.0 ghp_your_token_here
     exit /b 1
 )
 set "VERSION=%~1"
+
+:: Get GitHub token from parameter or environment or prompt
+set "TOKEN=%~2"
+if "!TOKEN!"=="" (
+    set "TOKEN=%GITHUB_TOKEN%"
+)
+if "!TOKEN!"=="" (
+    echo.
+    echo GitHub token is required for uploading to releases.
+    echo You can:
+    echo 1. Pass it as second parameter: %~nx0 %VERSION% your_token_here  
+    echo 2. Set GITHUB_TOKEN environment variable
+    echo 3. Skip upload and do it manually
+    echo.
+    set /p "TOKEN=Enter your GitHub token (or press Enter to skip upload): "
+)
 
 echo ====================================
 echo Velopack Build and GitHub Upload
@@ -29,7 +46,7 @@ echo Version: %VERSION%
 echo Project File: %PROJECT_FILE%
 echo Publish Dir: %PUBLISH_DIR%
 echo Releases Dir: %RELEASES_DIR%
-echo Framework: %FRAMEWORK%
+echo Channel: %CHANNEL%
 echo ====================================
 echo.
 
@@ -42,10 +59,10 @@ if errorlevel 1 (
 )
 echo Successfully published to %PUBLISH_DIR%
 
-:: Build Step 2: Create Velopack Release
+:: Build Step 2: Create Velopack Release (removed -f framework flag that was causing issues)
 echo.
 echo Building Velopack Release v%VERSION%
-vpk pack -u "%PACK_ID%" -v "%VERSION%" -o "%RELEASES_DIR%" -p "%PUBLISH_DIR%" -f "%FRAMEWORK%"
+vpk pack -u "%PACK_ID%" -v "%VERSION%" -o "%RELEASES_DIR%" -p "%PUBLISH_DIR%" --channel "%CHANNEL%"
 if errorlevel 1 (
     echo Error: Failed to create Velopack release
     exit /b 1
@@ -64,20 +81,58 @@ if errorlevel 1 (
 :: Upload Step 2: Download existing releases (for delta updates)
 echo.
 echo Downloading existing releases...
-vpk download github --repoUrl "%REPO_URL%"
+if "!TOKEN!"=="" (
+    vpk download github --repoUrl "%REPO_URL%" --channel "%CHANNEL%"
+) else (
+    vpk download github --repoUrl "%REPO_URL%" --channel "%CHANNEL%" --token "!TOKEN!"
+)
 if errorlevel 1 (
     echo Warning: Could not download existing releases (this is normal for first release)
 )
 
 :: Upload Step 3: Upload to GitHub
+if "!TOKEN!"=="" (
+    echo.
+    echo ==========================================
+    echo SKIPPING UPLOAD - No GitHub token provided
+    echo ==========================================
+    echo Your release files are ready in: %RELEASES_DIR%
+    echo.
+    echo To upload manually:
+    echo 1. Go to: %REPO_URL%/releases/new
+    echo 2. Tag: v%VERSION%
+    echo 3. Title: %PROJECT_NAME% %VERSION%
+    echo 4. Upload these files:
+    dir /b "%RELEASES_DIR%\*.exe" "%RELEASES_DIR%\*.nupkg" "%RELEASES_DIR%\RELEASES" 2>nul
+    echo ==========================================
+    goto :success
+)
+
 echo.
-echo Uploading to GitHub releases...
-vpk upload github --repoUrl "%REPO_URL%" --publish --releaseName "%PROJECT_NAME% %VERSION%" --tag "v%VERSION%"
+echo Uploading to GitHub releases with provided token...
+vpk upload github --repoUrl "%REPO_URL%" --publish --releaseName "%PROJECT_NAME% %VERSION%" --tag "v%VERSION%" --channel "%CHANNEL%" --token "!TOKEN!"
 if errorlevel 1 (
-    echo Error: Failed to upload to GitHub releases
-    echo Make sure you have the GITHUB_TOKEN environment variable set or are authenticated with GitHub CLI
+    echo.
+    echo ==========================================
+    echo UPLOAD FAILED
+    echo ==========================================
+    echo Possible issues:
+    echo 1. Invalid GitHub token
+    echo 2. No permission to create releases
+    echo 3. Network connectivity issue
+    echo 4. Token might need 'repo' scope permissions
+    echo.
+    echo Please verify your token has these permissions:
+    echo - repo (full control of repositories)
+    echo.
+    echo Manual upload option:
+    echo Go to: %REPO_URL%/releases/new
+    echo Upload files from: %RELEASES_DIR%
+    echo ==========================================
     exit /b 1
 )
+
+:success
 
 echo.
 echo ====================================
