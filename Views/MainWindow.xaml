@@ -34,363 +34,367 @@
             </LinearGradientBrush>
         </ResourceDictionary>
     </Window.Resources>
+    <Grid>
+        <Grid Grid.Column="0" x:Name="UpdateProgressPopup"
+              Background="#80000000"
+              HorizontalAlignment="Stretch"
+              Visibility="{Binding IsUpdating, Converter={StaticResource BooleanToVisibilityConverter}}"
+              VerticalAlignment="Stretch"
+              Panel.ZIndex="10">
 
-    <!-- Main Container with Modern Shadow -->
-    <Border Style="{StaticResource Card}"
-            Background="{StaticResource BackgroundBrush}"
-            Effect="{StaticResource WindowShadow}"
-            MouseLeftButtonDown="DragWindow">
-
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <!-- Header Section with Gradient -->
-            <Border Grid.Row="0"
-                    Background="{StaticResource HeaderGradient}"
-                    CornerRadius="16,16,0,0"
-                    Margin="-32,-32,-32,0"
-                    Padding="32,24,32,32">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <!-- Header Content -->
-                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                        <TextBlock Text="CSV Report Generator"
-                                   FontSize="24" FontWeight="Bold"
-                                   Foreground="White"
-                                   Margin="0,0,0,4" />
-                        <TextBlock Text="Transform your data into beautiful reports"
-                                   FontSize="14"
-                                   Foreground="#FFFFFF90"
-                                   FontWeight="Normal" />
-                    </StackPanel>
-
-                    <!-- Window Controls -->
-                    <StackPanel Grid.Column="1"
-                                Orientation="Horizontal"
-                                VerticalAlignment="Top"
-                                HorizontalAlignment="Right">
-                        <Button Content="🡇"
-                                Visibility="{Binding UpdateButtonVisibility}"
-                                Margin="60, 0"
-                                IsEnabled="{Binding IsUpdating, Converter={StaticResource BooleanNegationConverter}}"
-                                Padding="0, 0, 50, 0"
-                                Style="{StaticResource CloseButton}"
-                                Background="LightSkyBlue"
-                                Foreground="White"
-                                ToolTip="Update"
-                                Command="{Binding UpdateCommand}" />
-                        <Button Content="✕"
-                                Style="{StaticResource CloseButton}"
-                                Background="Red"
-                                Foreground="White"
-                                Command="{Binding ExitAppCommand}" />
-                    </StackPanel>
-                </Grid>
-            </Border>
-
-
-            <!-- Main Content -->
-            <ScrollViewer Grid.Row="1"
-                          Focusable="False"
-                          VerticalScrollBarVisibility="Auto"
-                          HorizontalScrollBarVisibility="Disabled"
-                          Padding="1,15,1,8">
-
-                <StackPanel
-                    Width="650"
-                    HorizontalAlignment="Center">
-
-
-                    <Button Content="{Binding LockButtonContent}"
-                            Width="32" Height="32"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Top"
-                            Margin="0,16,16,0"
-                            Background="Transparent"
-                            BorderBrush="Transparent"
-                            Cursor="Hand"
-                            ToolTip="Lock/Unlock"
-                            Command="{Binding OnLockClickCommand}" />
-
-
-                    <!-- Top Row: Technician, Stamp, Work Order -->
-                    <StackPanel Style="{StaticResource InputGroup}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="16" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="16" />
-                                <ColumnDefinition Width="2*" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Technician"
-                                       Style="{StaticResource FormLabel}" />
-                            <TextBox
-                                Grid.Column="0"
-                                Grid.Row="1"
-                                HorizontalScrollBarVisibility="Disabled"
-                                Text="{Binding TechnicianName, UpdateSourceTrigger=PropertyChanged}"
-                                Style="{StaticResource ModernTextBox}" />
-
-                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Stamp" Style="{StaticResource FormLabel}" />
-                            <TextBox
-                                Grid.Column="2"
-                                Grid.Row="1"
-                                HorizontalScrollBarVisibility="Disabled"
-                                Style="{StaticResource ModernTextBox}">
-                                <TextBox.Text>
-                                    <Binding Path="TechnicianStampDisplay" UpdateSourceTrigger="PropertyChanged"
-                                             Mode="TwoWay">
-                                        <Binding.ValidationRules>
-                                            <validation:IntValidationRule />
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBox.Text>
-                            </TextBox>
-
-                            <TextBlock Grid.Column="4" Grid.Row="0" Text="Work Order"
-                                       Style="{StaticResource FormLabel}" />
-                            <TextBox
-                                Grid.Column="4"
-                                Grid.Row="1"
-                                HorizontalScrollBarVisibility="Disabled"
-                                Style="{StaticResource ModernTextBox}"
-                                Text="{Binding WorkOrder, UpdateSourceTrigger=PropertyChanged}" />
-                        </Grid>
-                    </StackPanel>
-
-                    <!-- Middle Row: Maintenance Count, Last Maintenance -->
-                    <StackPanel Style="{StaticResource InputGroup}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="24" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Maintenance Count"
-                                       Style="{StaticResource FormLabel}" />
-                            <TextBox
-                                Grid.Column="0"
-                                Grid.Row="1"
-                                HorizontalScrollBarVisibility="Disabled"
-                                Style="{StaticResource ModernTextBox}">
-                                <TextBox.Text>
-                                    <Binding Path="MaintenanceCountDisplay" UpdateSourceTrigger="PropertyChanged"
-                                             Mode="TwoWay">
-                                        <Binding.ValidationRules>
-                                            <validation:IntValidationRule />
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBox.Text>
-                            </TextBox>
-
-                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Last Maintenance"
-                                       Style="{StaticResource FormLabel}" />
-                            <DatePicker
-                                Grid.Column="2"
-                                Grid.Row="1"
-                                Style="{StaticResource ModernDatePicker}"
-                                SelectedDate="{Binding LastMaintenance, UpdateSourceTrigger=PropertyChanged, StringFormat='MM/dd/yyyy'}"
-                                Language="en-US" />
-                        </Grid>
-                    </StackPanel>
-
-                    <!-- Bottom Row: ACSN, S.N., C.M.M (všechny tři vedle sebe) -->
-                    <StackPanel Style="{StaticResource InputGroup}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="16" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="16" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Grid.Column="0" Grid.Row="0" Text="AC/SN" Style="{StaticResource FormLabel}" />
-                            <TextBox
-                                Grid.Column="0"
-                                Grid.Row="1"
-                                HorizontalScrollBarVisibility="Disabled"
-                                Style="{StaticResource ModernTextBox}"
-                                Text="{Binding Acsn, UpdateSourceTrigger=PropertyChanged}" />
-
-                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Serial Number"
-                                       Style="{StaticResource FormLabel}" />
-                            <TextBox
-                                Grid.Column="2"
-                                Grid.Row="1"
-                                HorizontalScrollBarVisibility="Disabled"
-                                Style="{StaticResource ModernTextBox}"
-                                Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}" />
-
-                            <TextBlock Grid.Row="0" Grid.Column="4" Text="C.M.M." Style="{StaticResource FormLabel}" />
-                            <TextBox
-                                Grid.Column="4"
-                                Grid.Row="1"
-                                HorizontalScrollBarVisibility="Disabled"
-                                IsEnabled="{Binding IsRestrictedFieldEditEnabled}"
-                                Style="{StaticResource ModernTextBox}"
-                                Text="{Binding Cmm, UpdateSourceTrigger=PropertyChanged}" />
-                        </Grid>
-                    </StackPanel>
-
-                    <!-- CSV File Selection Section -->
-                    <StackPanel Style="{StaticResource InputGroup}">
-                        <TextBlock Text="Select CSV File" Style="{StaticResource FormLabel}" />
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBox
-                                Grid.Column="0"
-                                Style="{StaticResource ModernTextBox}"
-                                Text="{Binding CsvFilePathDisplay, Mode=OneWay}"
-                                IsReadOnly="True"
-                                TextWrapping="NoWrap"
-                                ToolTip="{Binding CsvFilePath}"
-                                HorizontalScrollBarVisibility="Disabled"
-                                Foreground="{StaticResource TextMutedBrush}"
-                                Margin="0,0,12,0" />
-
-                            <Button Grid.Column="1"
-                                    Content="📁 Browse"
-                                    Style="{StaticResource SecondaryButton}"
-                                    Command="{Binding BrowseCsvCommand}"
-                                    Margin="0" />
-                            
-                            <Grid Grid.Column="0" x:Name="UpdateProgressPopup"
-                                  Visibility="{Binding IsUpdating, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                  Background="#80000000" 
-                                  HorizontalAlignment="Stretch"
-                                  VerticalAlignment="Stretch"
-                                  Panel.ZIndex="10">
-
-                                <Border Width="300" Height="120"
-                                        Background="{StaticResource SurfaceBrush}"
-                                        CornerRadius="12"
-                                        Padding="20"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Effect="{StaticResource WindowShadow}">
-
-                                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
-
-                                        <TextBlock Text="Updating..."
-                                                   FontWeight="SemiBold"
-                                                   FontSize="16"
-                                                   Margin="0,0,0,12"
-                                                   HorizontalAlignment="Center" />
-
-                                        <ProgressBar Width="250"
-                                                     Height="20"
-                                                     Minimum="0"
-                                                     Maximum="100"
-                                                     Value="{Binding UpdateProgress}" />
-
-                                        <TextBlock Text="{Binding UpdateProgress, StringFormat={}{0}%}"
-                                                   FontWeight="Normal"
-                                                   FontSize="14"
-                                                   Margin="0,8,0,0"
-                                                   HorizontalAlignment="Center" />
-
-                                    </StackPanel>
-                                </Border>
-                            </Grid>
-                        </Grid>
-                    </StackPanel>
-
-
-                    <!-- Feature Cards -->
-                    <!-- <Border Background="{StaticResource SurfaceBrush}" -->
-                    <!--         CornerRadius="12" -->
-                    <!--         BorderBrush="{StaticResource BorderBrush}" -->
-                    <!--         BorderThickness="1" -->
-                    <!--         Padding="20" -->
-                    <!--         Margin="0,8,0,24"> -->
-                    <!--     <StackPanel> -->
-                    <!--         <TextBlock Text="✨ Features"  -->
-                    <!--                    FontWeight="SemiBold"  -->
-                    <!--                    FontSize="14" -->
-                    <!--                    Foreground="{StaticResource TextPrimaryBrush}" -->
-                    <!--                    Margin="0,0,0,12"/> -->
-                    <!--         <Grid> -->
-                    <!--             <Grid.ColumnDefinitions> -->
-                    <!--                 <ColumnDefinition Width="*"/> -->
-                    <!--                 <ColumnDefinition Width="*"/> -->
-                    <!--             </Grid.ColumnDefinitions> -->
-                    <!--             <StackPanel Grid.Column="0" Margin="0,0,12,0"> -->
-                    <!--                 <TextBlock Text="📊 Smart Analytics" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/> -->
-                    <!--                 <TextBlock Text="🎨 Beautiful Design" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/> -->
-                    <!--             </StackPanel> -->
-                    <!--             <StackPanel Grid.Column="1"> -->
-                    <!--                 <TextBlock Text="⚡ Fast Processing" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/> -->
-                    <!--                 <TextBlock Text="📤 Easy Export" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/> -->
-                    <!--             </StackPanel> -->
-                    <!--         </Grid> -->
-                    <!--     </StackPanel> -->
-                    <!-- </Border> -->
-
-                    <!-- Action Buttons -->
-                    <StackPanel Orientation="Horizontal"
-                                HorizontalAlignment="Center"
-                                Margin="0,16,0,0">
-                        <Button Content="🚀 Generate Report"
-                                IsEnabled="{Binding IsGenerateButtonEnabled}"
-                                Style="{StaticResource SuccessButton}"
-                                Command="{Binding GenerateReportCommand}"
-                                MinWidth="160" />
-                        <Button Content="❌ Exit"
-                                Style="{StaticResource DangerButton}"
-                                Command="{Binding ExitAppCommand}"
-                                MinWidth="100" />
-                    </StackPanel>
-
-                </StackPanel>
-
-            </ScrollViewer>
-
-            <!-- Footer -->
-            <Border Grid.Row="2"
+            <Border Width="300" Height="120"
                     Background="{StaticResource SurfaceBrush}"
-                    CornerRadius="0,0,16,16"
-                    Margin="-32,0,-32,-32"
-                    Padding="32,16,32,24"
-                    BorderBrush="{StaticResource BorderBrush}"
-                    BorderThickness="0,1,0,0">
-                <StackPanel HorizontalAlignment="Center">
-                    <TextBlock Text="Made with ❤️ using WPF &amp; Modern Design"
-                               Style="{StaticResource Footer}" />
-                    <TextBlock Text="v2.0.0 • Built for productivity"
-                               FontSize="10"
-                               Foreground="{StaticResource TextMutedBrush}"
-                               HorizontalAlignment="Center"
-                               Margin="0,4,0,0" />
+                    CornerRadius="12"
+                    Padding="20"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Effect="{StaticResource WindowShadow}">
+
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                    <TextBlock Text="Updating..."
+                               FontWeight="SemiBold"
+                               FontSize="16"
+                               Margin="0,0,0,12"
+                               HorizontalAlignment="Center" />
+
+                    <ProgressBar Width="250"
+                                 Height="20"
+                                 Minimum="0"
+                                 Maximum="100"
+                                 Value="{Binding UpdateProgress}" />
+
+                    <TextBlock Text="{Binding UpdateProgress, StringFormat={}{0}%}"
+                               FontWeight="Normal"
+                               FontSize="14"
+                               Margin="0,8,0,0"
+                               HorizontalAlignment="Center" />
+
                 </StackPanel>
             </Border>
         </Grid>
-    </Border>
+
+        <!-- Main Container with Modern Shadow -->
+        <Border Style="{StaticResource Card}"
+                Background="{StaticResource BackgroundBrush}"
+                Effect="{StaticResource WindowShadow}"
+                MouseLeftButtonDown="DragWindow">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- Header Section with Gradient -->
+                <Border Grid.Row="0"
+                        Background="{StaticResource HeaderGradient}"
+                        CornerRadius="16,16,0,0"
+                        Margin="-32,-32,-32,0"
+                        Padding="32,24,32,32">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Header Content -->
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                            <TextBlock Text="CSV Report Generator"
+                                       FontSize="24" FontWeight="Bold"
+                                       Foreground="White"
+                                       Margin="0,0,0,4" />
+                            <TextBlock Text="Transform your data into beautiful reports"
+                                       FontSize="14"
+                                       Foreground="#FFFFFF90"
+                                       FontWeight="Normal" />
+                        </StackPanel>
+
+                        <!-- Window Controls -->
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Right">
+                            <Button Content="🡇"
+                                    Visibility="{Binding UpdateButtonVisibility}"
+                                    Margin="60, 0"
+                                    IsEnabled="{Binding IsUpdating, Converter={StaticResource BooleanNegationConverter}}"
+                                    Padding="0, 0, 50, 0"
+                                    Style="{StaticResource CloseButton}"
+                                    Background="LightSkyBlue"
+                                    Foreground="White"
+                                    ToolTip="Update"
+                                    Command="{Binding UpdateCommand}" />
+                            <Button Content="✕"
+                                    Style="{StaticResource CloseButton}"
+                                    Background="Red"
+                                    Foreground="White"
+                                    Command="{Binding ExitAppCommand}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+
+                <!-- Main Content -->
+                <ScrollViewer Grid.Row="1"
+                              Focusable="False"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              Padding="1,15,1,8">
+
+                    <StackPanel
+                        Width="650"
+                        HorizontalAlignment="Center">
+
+
+                        <Button Content="{Binding LockButtonContent}"
+                                Width="32" Height="32"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Margin="0,16,16,0"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                Cursor="Hand"
+                                ToolTip="Lock/Unlock"
+                                Command="{Binding OnLockClickCommand}" />
+
+
+                        <!-- Top Row: Technician, Stamp, Work Order -->
+                        <StackPanel Style="{StaticResource InputGroup}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="16" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="16" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Technician"
+                                           Style="{StaticResource FormLabel}" />
+                                <TextBox
+                                    Grid.Column="0"
+                                    Grid.Row="1"
+                                    HorizontalScrollBarVisibility="Disabled"
+                                    Text="{Binding TechnicianName, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource ModernTextBox}" />
+
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Stamp" Style="{StaticResource FormLabel}" />
+                                <TextBox
+                                    Grid.Column="2"
+                                    Grid.Row="1"
+                                    HorizontalScrollBarVisibility="Disabled"
+                                    Style="{StaticResource ModernTextBox}">
+                                    <TextBox.Text>
+                                        <Binding Path="TechnicianStampDisplay" UpdateSourceTrigger="PropertyChanged"
+                                                 Mode="TwoWay">
+                                            <Binding.ValidationRules>
+                                                <validation:IntValidationRule />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+
+                                <TextBlock Grid.Column="4" Grid.Row="0" Text="Work Order"
+                                           Style="{StaticResource FormLabel}" />
+                                <TextBox
+                                    Grid.Column="4"
+                                    Grid.Row="1"
+                                    HorizontalScrollBarVisibility="Disabled"
+                                    Style="{StaticResource ModernTextBox}"
+                                    Text="{Binding WorkOrder, UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- Middle Row: Maintenance Count, Last Maintenance -->
+                        <StackPanel Style="{StaticResource InputGroup}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="24" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Maintenance Count"
+                                           Style="{StaticResource FormLabel}" />
+                                <TextBox
+                                    Grid.Column="0"
+                                    Grid.Row="1"
+                                    HorizontalScrollBarVisibility="Disabled"
+                                    Style="{StaticResource ModernTextBox}">
+                                    <TextBox.Text>
+                                        <Binding Path="MaintenanceCountDisplay" UpdateSourceTrigger="PropertyChanged"
+                                                 Mode="TwoWay">
+                                            <Binding.ValidationRules>
+                                                <validation:IntValidationRule />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Last Maintenance"
+                                           Style="{StaticResource FormLabel}" />
+                                <DatePicker
+                                    Grid.Column="2"
+                                    Grid.Row="1"
+                                    Style="{StaticResource ModernDatePicker}"
+                                    SelectedDate="{Binding LastMaintenance, UpdateSourceTrigger=PropertyChanged, StringFormat='MM/dd/yyyy'}"
+                                    Language="en-US" />
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- Bottom Row: ACSN, S.N., C.M.M (všechny tři vedle sebe) -->
+                        <StackPanel Style="{StaticResource InputGroup}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="16" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="16" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="AC/SN" Style="{StaticResource FormLabel}" />
+                                <TextBox
+                                    Grid.Column="0"
+                                    Grid.Row="1"
+                                    HorizontalScrollBarVisibility="Disabled"
+                                    Style="{StaticResource ModernTextBox}"
+                                    Text="{Binding Acsn, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Serial Number"
+                                           Style="{StaticResource FormLabel}" />
+                                <TextBox
+                                    Grid.Column="2"
+                                    Grid.Row="1"
+                                    HorizontalScrollBarVisibility="Disabled"
+                                    Style="{StaticResource ModernTextBox}"
+                                    Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <TextBlock Grid.Row="0" Grid.Column="4" Text="C.M.M."
+                                           Style="{StaticResource FormLabel}" />
+                                <TextBox
+                                    Grid.Column="4"
+                                    Grid.Row="1"
+                                    HorizontalScrollBarVisibility="Disabled"
+                                    IsEnabled="{Binding IsRestrictedFieldEditEnabled}"
+                                    Style="{StaticResource ModernTextBox}"
+                                    Text="{Binding Cmm, UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- CSV File Selection Section -->
+                        <StackPanel Style="{StaticResource InputGroup}">
+                            <TextBlock Text="Select CSV File" Style="{StaticResource FormLabel}" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBox
+                                    Grid.Column="0"
+                                    Style="{StaticResource ModernTextBox}"
+                                    Text="{Binding CsvFilePathDisplay, Mode=OneWay}"
+                                    IsReadOnly="True"
+                                    TextWrapping="NoWrap"
+                                    ToolTip="{Binding CsvFilePath}"
+                                    HorizontalScrollBarVisibility="Disabled"
+                                    Foreground="{StaticResource TextMutedBrush}"
+                                    Margin="0,0,12,0" />
+
+                                <Button Grid.Column="1"
+                                        Content="📁 Browse"
+                                        Style="{StaticResource SecondaryButton}"
+                                        Command="{Binding BrowseCsvCommand}"
+                                        Margin="0" />
+
+                                <!-- Visibility="{Binding IsUpdating, Converter={StaticResource BooleanToVisibilityConverter}}" -->
+                            </Grid>
+                        </StackPanel>
+
+
+                        <!-- Feature Cards -->
+                        <!-- <Border Background="{StaticResource SurfaceBrush}" -->
+                        <!--         CornerRadius="12" -->
+                        <!--         BorderBrush="{StaticResource BorderBrush}" -->
+                        <!--         BorderThickness="1" -->
+                        <!--         Padding="20" -->
+                        <!--         Margin="0,8,0,24"> -->
+                        <!--     <StackPanel> -->
+                        <!--         <TextBlock Text="✨ Features"  -->
+                        <!--                    FontWeight="SemiBold"  -->
+                        <!--                    FontSize="14" -->
+                        <!--                    Foreground="{StaticResource TextPrimaryBrush}" -->
+                        <!--                    Margin="0,0,0,12"/> -->
+                        <!--         <Grid> -->
+                        <!--             <Grid.ColumnDefinitions> -->
+                        <!--                 <ColumnDefinition Width="*"/> -->
+                        <!--                 <ColumnDefinition Width="*"/> -->
+                        <!--             </Grid.ColumnDefinitions> -->
+                        <!--             <StackPanel Grid.Column="0" Margin="0,0,12,0"> -->
+                        <!--                 <TextBlock Text="📊 Smart Analytics" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/> -->
+                        <!--                 <TextBlock Text="🎨 Beautiful Design" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/> -->
+                        <!--             </StackPanel> -->
+                        <!--             <StackPanel Grid.Column="1"> -->
+                        <!--                 <TextBlock Text="⚡ Fast Processing" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/> -->
+                        <!--                 <TextBlock Text="📤 Easy Export" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/> -->
+                        <!--             </StackPanel> -->
+                        <!--         </Grid> -->
+                        <!--     </StackPanel> -->
+                        <!-- </Border> -->
+
+                        <!-- Action Buttons -->
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center"
+                                    Margin="0,16,0,0">
+                            <Button Content="🚀 Generate Report"
+                                    IsEnabled="{Binding IsGenerateButtonEnabled}"
+                                    Style="{StaticResource SuccessButton}"
+                                    Command="{Binding GenerateReportCommand}"
+                                    MinWidth="160" />
+                            <Button Content="❌ Exit"
+                                    Style="{StaticResource DangerButton}"
+                                    Command="{Binding ExitAppCommand}"
+                                    MinWidth="100" />
+                        </StackPanel>
+
+                    </StackPanel>
+
+                </ScrollViewer>
+
+                <!-- Footer -->
+                <Border Grid.Row="2"
+                        Background="{StaticResource SurfaceBrush}"
+                        CornerRadius="0,0,16,16"
+                        Margin="-32,0,-32,-32"
+                        Padding="32,16,32,24"
+                        BorderBrush="{StaticResource BorderBrush}"
+                        BorderThickness="0,1,0,0">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="Made with ❤️ using WPF &amp; Modern Design"
+                                   Style="{StaticResource Footer}" />
+                        <TextBlock Text="v2.0.0 • Built for productivity"
+                                   FontSize="10"
+                                   Foreground="{StaticResource TextMutedBrush}"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
 </Window>
