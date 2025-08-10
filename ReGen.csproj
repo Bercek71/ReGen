@@ -9,6 +9,7 @@
         <StartupObject>ReGen.Program</StartupObject>
         <GenerateApplicationDefinition>false</GenerateApplicationDefinition>
         <UseWPF>true</UseWPF>
+        <ApplicationIcon>icon.ico</ApplicationIcon>
     </PropertyGroup>
     <ItemGroup>
         <ApplicationDefinition Remove="App.xaml"/>
