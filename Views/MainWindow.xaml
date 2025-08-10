@@ -192,7 +192,8 @@
                                     Style="{StaticResource ModernTextBox}">
                                     <TextBox.Text>
                                         <Binding Path="TechnicianStampDisplay" UpdateSourceTrigger="PropertyChanged"
-                                                 Mode="TwoWay">
+                                                 Mode="TwoWay"
+                                                 ValidatesOnDataErrors="True">
                                             <Binding.ValidationRules>
                                                 <validation:IntValidationRule />
                                             </Binding.ValidationRules>
@@ -233,6 +234,7 @@
                                     Style="{StaticResource ModernTextBox}">
                                     <TextBox.Text>
                                         <Binding Path="MaintenanceCountDisplay" UpdateSourceTrigger="PropertyChanged"
+                                                 ValidatesOnDataErrors="True"
                                                  Mode="TwoWay">
                                             <Binding.ValidationRules>
                                                 <validation:IntValidationRule />

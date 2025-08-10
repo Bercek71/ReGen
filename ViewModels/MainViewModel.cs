@@ -45,26 +45,10 @@ public class MainViewModel : BaseViewModel
 
     private UpdateManager UpdateManager { get; }
 
-    private int? TechnicianStamp
-    {
-        get
-        {
-            if (int.TryParse(_technicianStampDisplay, out var result)) return result;
-
-            return null;
-        }
-    }
+    private int TechnicianStamp => int.TryParse(_technicianStampDisplay, out var result) ? result : int.MinValue;
 
 
-    private int? MaintenanceCount
-    {
-        get
-        {
-            if (int.TryParse(_maintenanceCountDisplay, out var result)) return result;
-
-            return null;
-        }
-    }
+    private int MaintenanceCount => int.TryParse(_maintenanceCountDisplay, out var result) ? result : int.MinValue;
 
     public bool IsRestrictedFieldEditEnabled
     {
@@ -337,28 +321,17 @@ public class MainViewModel : BaseViewModel
             return;
         }
 
-        if (!TechnicianStamp.HasValue)
-        {
-            MessageBox.Show("Please enter your support stamp.", "Missing Stamp", MessageBoxButton.OK,
-                MessageBoxImage.Warning);
-            return;
-        }
-
-        if (!MaintenanceCount.HasValue)
-        {
-            MessageBox.Show("Please enter maintenance count", "Missing Maintenance Count", MessageBoxButton.OK, MessageBoxImage.Warning);
-            return;
-        }
-
         if (string.IsNullOrWhiteSpace(Acsn))
         {
-            MessageBox.Show("Please enter acs number", "Missing Acs Number", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show("Please enter acs number", "Missing Acs Number", MessageBoxButton.OK,
+                MessageBoxImage.Warning);
             return;
         }
 
         if (string.IsNullOrWhiteSpace(WorkOrder))
         {
-            MessageBox.Show("Please enter work order", "Missing Work Order", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show("Please enter work order", "Missing Work Order", MessageBoxButton.OK,
+                MessageBoxImage.Warning);
             return;
         }
 
@@ -370,13 +343,14 @@ public class MainViewModel : BaseViewModel
 
         if (string.IsNullOrWhiteSpace(SerialNumber))
         {
-            MessageBox.Show("Please enter SerialNumber", "Missing Serial number", MessageBoxButton.OK,  MessageBoxImage.Warning);
+            MessageBox.Show("Please enter SerialNumber", "Missing Serial number", MessageBoxButton.OK,
+                MessageBoxImage.Warning);
             return;
         }
-        
+
         IsGenerateButtonEnabled = false;
-        
-        
+
+
         PreviewReport(null!);
 
         Task.Run(async () =>
@@ -385,8 +359,7 @@ public class MainViewModel : BaseViewModel
             IsGenerateButtonEnabled = true;
         });
     }
-    
-    
+
 
     private void PreviewReport(object _)
     {
@@ -409,8 +382,8 @@ public class MainViewModel : BaseViewModel
                 TechnicianName = TechnicianName,
                 Acsn = Acsn,
                 WorkOrder = WorkOrder,
-                TechnicianStamp = TechnicianStamp ?? 0,
-                MaintenanceCount = MaintenanceCount ?? 0,
+                TechnicianStamp = TechnicianStamp == int.MinValue ? 0 : TechnicianStamp,
+                MaintenanceCount = MaintenanceCount == int.MinValue ? 0 : MaintenanceCount,
 
                 Cn = 31.21
             };
