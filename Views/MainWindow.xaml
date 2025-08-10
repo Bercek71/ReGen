@@ -77,6 +77,15 @@
                                 Orientation="Horizontal"
                                 VerticalAlignment="Top"
                                 HorizontalAlignment="Right">
+                        <Button Content="🡇"
+                                Visibility="{Binding UpdateButtonVisibility}"
+                                Margin="60, 0"
+                                Padding="0, 0, 50, 0"
+                                Style="{StaticResource CloseButton}"
+                                Background="LightSkyBlue"
+                                Foreground="White"
+                                ToolTip="Update"
+                                Command="{Binding ExitAppCommand}" />
                         <Button Content="✕"
                                 Style="{StaticResource CloseButton}"
                                 Background="Red"

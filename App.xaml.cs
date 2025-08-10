@@ -1,18 +1,16 @@
-﻿using QuestPDF.Infrastructure;
+﻿using System.Drawing;
+using System.Windows;
+using QuestPDF.Infrastructure;
 using ReGen.Extensions;
+using ReGen.Views;
+using Velopack;
 
 namespace ReGen;
 
-/// <summary>
-/// Interaction logic for App.xaml
-/// </summary>
-public partial class App
+public partial class App : Application
 {
     public App()
     {
-        QuestPDF.Settings.License = LicenseType.Community;
-        TmpHelper.InitializeTmpWorkSpace();
-        TmpHelper.ClearChartsDirectory();
-        TmpHelper.ClearMonthOldDocuments();
+        InitializeComponent();
     }
 }

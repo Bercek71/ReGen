@@ -6,6 +6,7 @@ using ReGen.Extensions;
 using ReGen.Generators;
 using ReGen.Model;
 using ReGen.Properties;
+using Velopack;
 
 namespace ReGen.ViewModels;
 
@@ -24,6 +25,7 @@ public class MainViewModel : BaseViewModel
 
     private string _technicianStampDisplay = Settings_Designer.Default.TechnicianStamp.ToString();
     private string _workOrder = Settings_Designer.Default.WorkOrder;
+    private Visibility _updateButtonVisibility = Visibility.Hidden;
 
     public MainViewModel()
     {
@@ -31,6 +33,8 @@ public class MainViewModel : BaseViewModel
         GenerateReportCommand = new RelayCommand(GenerateReport);
         ExitAppCommand = new RelayCommand(_ => Application.Current.Shutdown());
         OnLockClickCommand = new RelayCommand(LockClickHandler);
+        
+        CheckForUpdate();
     }
 
     private int? TechnicianStamp
@@ -114,6 +118,13 @@ public class MainViewModel : BaseViewModel
                 ? "..." + _csvFilePath[^maxLength..] // Show only the end
                 : _csvFilePath;
         }
+    }
+
+    private async void CheckForUpdate()
+    {
+        // https://github.com/bercek71/ReGen/releases/latest/download
+        // var mgr = new UpdateManager()
+
     }
 
     public ICommand BrowseCsvCommand { get; }
@@ -221,6 +232,17 @@ public class MainViewModel : BaseViewModel
         {
             if (value == _isGenerateButtonEnabled) return;
             _isGenerateButtonEnabled = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility UpdateButtonVisibility
+    {
+        get => _updateButtonVisibility;
+        set
+        {
+            if (value == _updateButtonVisibility) return;
+            _updateButtonVisibility = value;
             OnPropertyChanged();
         }
     }

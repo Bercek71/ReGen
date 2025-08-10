@@ -6,9 +6,14 @@
         <Version>0.8.0</Version>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <StartupObject>ReGen.Program</StartupObject>
+        <GenerateApplicationDefinition>false</GenerateApplicationDefinition>
         <UseWPF>true</UseWPF>
     </PropertyGroup>
-
+    <ItemGroup>
+        <ApplicationDefinition Remove="App.xaml"/>
+        <Page Include="App.xaml"/>
+    </ItemGroup>
     <ItemGroup>
       <Page Update="Views\MainWindow.xaml">
         <Generator>MSBuild:Compile</Generator>
@@ -26,6 +31,7 @@
       <PackageReference Include="CsvHelper" Version="33.1.0" />
       <PackageReference Include="QuestPDF" Version="2025.7.0" />
       <PackageReference Include="ScottPlot" Version="5.0.55" />
+      <PackageReference Include="Velopack" Version="0.0.1298" />
     </ItemGroup>
 
 </Project>
