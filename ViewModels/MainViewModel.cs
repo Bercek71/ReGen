@@ -269,8 +269,12 @@ public class MainViewModel : BaseViewModel
         var updateInfo =  await UpdateManager.CheckForUpdatesAsync();
         if (updateInfo != null)
         {
-            await UpdateManager.DownloadUpdatesAsync(updateInfo);
+            //Show window with progress bar
+            await UpdateManager.DownloadUpdatesAsync(updateInfo, i =>
+            {
+            });
             var asset = UpdateManager.UpdatePendingRestart;
+            MessageBox.Show("Update Installed, restarting now...");
             UpdateManager.ApplyUpdatesAndRestart(asset);
         }
     }
