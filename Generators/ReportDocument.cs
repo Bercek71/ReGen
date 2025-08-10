@@ -128,53 +128,99 @@ public class ReportDocument : IDocument
         col.Item().Row(row =>
         {
             // LEFT DATA TABLE
-            row.ConstantItem(200).Column(left =>
+            row.ConstantItem(150).Column(left =>
             {
-                left.Item().Text("WORK ORDER NO:").Bold();//.Text("1651651561");
-                left.Item().Text("A/C S/N:    A/C REG:");//.Text("03902 / VP - CAN");
-                left.Item().Text("TECHNICIAN/STAMP");//.Text("BEREGHÁZY / 1172");
-        
-                left.Item().Text("Cycle: 1   Step: 1");
-                left.Item().Text("Sequence: CAPACITY TEST");
-                left.Item().Text("File: Step_1_1_1");
-        
-                left.Item().PaddingTop(5).Text("Time: 01:01:05");
-                left.Item().Text("Volts: 29.044  → 23.399");
-                left.Item().Text("Amp: 0.0  → 23.0");
-                left.Item().Text("°C: 28.8  → 39.3");
-                left.Item().Text("Ah: 23.381");
-                left.Item().Text("%Cn: 101.658");
+                left.Item().Border(1, Colors.Black).Padding(10).Column(workOrderRow =>
+                {
+                    workOrderRow.Item().Text("WORK ORDER NO:").Bold(); //.Text("1651651561");
+                    workOrderRow.Item().PaddingBottom(10).Text(Properties.Settings_Designer.Default.WorkOrder);
+
+
+
+                    workOrderRow.Item().Text("A/C S/N:    A/C REG:").Bold(); //.Text("03902 / VP - CAN");
+                    workOrderRow.Item().PaddingBottom(10).Text(Properties.Settings_Designer.Default.ACSN);
+
+                    workOrderRow.Item().Text("TECHNICIAN/STAMP").Bold();
+                    workOrderRow.Item().Text(
+                        $"{Properties.Settings_Designer.Default.TechnicianName} / {Properties.Settings_Designer.Default.TechnicianStamp.ToString()}");
+                });
+                left.Item().Border(1, Colors.Black).Padding(10).Column(seriesInfo =>
+                {
+                    
+                    seriesInfo.Item().PaddingBottom(10).Row(timeRow =>
+                    {
+                        timeRow.RelativeItem().Text("Time").Bold();
+                        timeRow.RelativeItem().Text("-0");
+                        timeRow.RelativeItem().Text("01:01:05");
+                    });
+                    
+                    seriesInfo.Item().PaddingBottom(10).Row(voltageRow =>
+                    {
+                        voltageRow.RelativeItem().Text("Voltage").Bold();
+                        voltageRow.RelativeItem().Text("29.044");
+                        voltageRow.RelativeItem().Text("23.399");
+                    });
+
+                    seriesInfo.Item().Row(ampRow =>
+                    {
+                        ampRow.RelativeItem().Text("Amp").Bold();
+                        ampRow.RelativeItem().Text("0.0");
+                        ampRow.RelativeItem().Text("23.0");
+                    });
+                    
+                });
+                left.Item().Border(1, Colors.Black).Padding(10).Column(seriesInfo =>
+                {
+                    seriesInfo.Item().Row(ahRow =>
+                    {
+                        ahRow.RelativeItem().Text("Ah.").Bold();
+                        ahRow.RelativeItem().Text("23.381");
+                    });  
+                    seriesInfo.Item().Row(cnRow =>
+                    {
+                        cnRow.RelativeItem().Text("%Cn").Bold();
+                        cnRow.RelativeItem().Text("101.658");
+                    });  
+                        
+                });
             });
         
             // CHART CENTER
             // row.RelativeItem().Image(ChartImagePath);
         
             // RIGHT OBSERVATION TABLE
-            row.ConstantItem(200).Column(right =>
+            row.ConstantItem(250).Border(1, Colors.Black).AlignRight().Padding(5).Column(right =>
             {
-                right.Item().Text("Observation").Bold().Underline();
-                right.Item().Table(table =>
+                right.Item().AlignRight().Row(headerRow =>
                 {
-                    table.ColumnsDefinition(c =>
-                    {
-                        c.ConstantColumn(80);
-                        c.RelativeColumn();
-                    });
-        
-                    table.Header(header =>
-                    {
-                        header.Cell().Text("Time").Bold();
-                        header.Cell().Text("Code").Bold();
-                    });
-        
-                    table.Cell().Text("00:00:01");
-                    table.Cell().Text("A_Cell");
-        
-                    table.Cell().Text("00:55:00");
-                    table.Cell().Text("A_Time");
-        
-                    table.Cell().Text("01:01:06");
-                    table.Cell().Text("STOP_OP");
+                    headerRow.RelativeItem();
+                    headerRow.ConstantItem(50).AlignCenter().Text("PASS").Bold();
+                    headerRow.ConstantItem(50).AlignCenter().Text("FAULT").Bold();
+                });
+                right.Item().PaddingBottom(10).Row(visualInspectionCol =>
+                {
+                    visualInspectionCol.RelativeItem().Text("1. Visual inspection");
+                    visualInspectionCol.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
+                    visualInspectionCol.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
+                });
+                
+                right.Item().PaddingBottom(10).Row(insulationTest =>
+                {
+                    insulationTest.RelativeItem().Text("2. INSULATION TEST \n VALUE: \u2610 MΩ");
+                    insulationTest.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
+                    insulationTest.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
+                });
+                
+                right.Item().PaddingBottom(10).Row(outputVoltageTest =>
+                {
+                    outputVoltageTest.RelativeItem().Text("3. OUTPUT VOLTAGE TEST \n VALUE: \u2610 V DC");
+                    outputVoltageTest.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
+                    outputVoltageTest.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
+                });
+                
+                right.Item().Row(capacityTest =>
+                {
+                    capacityTest.RelativeItem().Text("4. CAPACITY TEST");
                 });
             });
         });
