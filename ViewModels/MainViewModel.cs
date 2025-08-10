@@ -325,7 +325,6 @@ public class MainViewModel : BaseViewModel
 
     private void GenerateReport(object? _)
     {
-        IsGenerateButtonEnabled = false;
         if (string.IsNullOrWhiteSpace(CsvFilePath))
         {
             MessageBox.Show("Please select a CSV file.", "Missing File", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -374,6 +373,9 @@ public class MainViewModel : BaseViewModel
             MessageBox.Show("Please enter SerialNumber", "Missing Serial number", MessageBoxButton.OK,  MessageBoxImage.Warning);
             return;
         }
+        
+        IsGenerateButtonEnabled = false;
+        
         
         PreviewReport(null!);
 

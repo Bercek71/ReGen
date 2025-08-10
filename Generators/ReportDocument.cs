@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.IO;
+using System.Reflection;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -45,7 +46,8 @@ public class ReportDocument : IDocument
                 // HEADER
                 col.Item().Border(1, Colors.Black).Padding(10).Row(row =>
                 {
-                    row.RelativeItem().AlignLeft().Column(left => { left.Item().Text("LOGO").Bold(); });
+                    var logoBytes = LoadEmbeddedImage("ReGen.Resources.logo.jpg");
+                    row.RelativeItem().AlignLeft().Column(left => { left.Item().Height(50).Width(155).Image(logoBytes); });
 
                     row.RelativeItem().Column(center => { center.Item().Text("Shop Report").FontSize(24).Bold(); });
 
@@ -227,5 +229,14 @@ public class ReportDocument : IDocument
                 });
             });
         });
+    }
+    private byte[] LoadEmbeddedImage(string resourceName)
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+        using var stream = assembly.GetManifestResourceStream(resourceName)
+                           ?? throw new InvalidOperationException($"Resource {resourceName} not found.");
+        using var ms = new MemoryStream();
+        stream.CopyTo(ms);
+        return ms.ToArray();
     }
 }

@@ -34,4 +34,9 @@
       <PackageReference Include="Velopack" Version="0.0.1298" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Resources\logo.jpg" />
+      <EmbeddedResource Include="Resources\logo.jpg" />
+    </ItemGroup>
+
 </Project>
