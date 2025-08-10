@@ -1,8 +1,10 @@
-﻿using System.IO;
+﻿using System.Globalization;
+using System.IO;
 using System.Windows.Controls;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using ReGen.Model;
 
 namespace ReGen.Generators;
 
@@ -12,16 +14,18 @@ public class ReportDocument : IDocument
 
     private ulong TestNumber { get; }
     
-    public ReportDocument(string csvDataPath, ulong testNumber)
+    private PdfData Data {get;}
+    
+    public ReportDocument(string chartImagePath, ulong testNumber, PdfData data)
     {
-        if (!File.Exists(csvDataPath))
+        if (!File.Exists(chartImagePath))
         {
-            throw new ArgumentException("CSV file path does not exist");
+            throw new ArgumentException("Chart image file is invalid");
         }
         
         TestNumber = testNumber;
-        ChartImagePath = Path.Combine(Path.GetTempPath(), "Reports", "Charts");
-        
+        ChartImagePath = chartImagePath;
+        this.Data = data;
         // PlotGenerator.GeneratePlot(csvDataPath);
         // chartImagePath = chartPath;
     }
@@ -83,7 +87,7 @@ public class ReportDocument : IDocument
                     row.RelativeItem().Border(1, Colors.Black).BorderLeft(0).Padding(5).AlignCenter().Row(infoRow =>
                     {
                         infoRow.RelativeItem().Text("P.N. : 3214-31");
-                        infoRow.RelativeItem().Text($"S.N. : {Properties.Settings_Designer.Default.SerialNumber}");
+                        infoRow.RelativeItem().Text($"S.N. : {Data.SerialNumber}");
                         infoRow.RelativeItem().AlignLeft().Text("AMDT: E");
                     });
                     row.ConstantItem(190).AlignRight().Border(1, Colors.Black).BorderLeft(0).Padding(5).Row(infoRow =>
@@ -94,12 +98,12 @@ public class ReportDocument : IDocument
                             {
                                 cmmRow.RelativeItem().Column(labelCol => labelCol.Item().Text("C.M.M. :").ExtraBold());
                                 cmmRow.RelativeItem().Column(labelCol =>
-                                    labelCol.Item().Text(Properties.Settings_Designer.Default.CMM));
+                                    labelCol.Item().Text(Data.Cmm));
                             });
 
                             infoCol.Item().Row(lastMaintenanceRow =>
                             {
-                                var lastDate = Properties.Settings_Designer.Default.LastMaintenance;
+                                var lastDate = Data.LastMaintenance;
                                 
                                 lastMaintenanceRow.RelativeItem()
                                     .Column(labelCol => labelCol.Item().Text("Last maintenance:"));
@@ -133,16 +137,16 @@ public class ReportDocument : IDocument
                 left.Item().Border(1, Colors.Black).Padding(10).Column(workOrderRow =>
                 {
                     workOrderRow.Item().Text("WORK ORDER NO:").Bold(); //.Text("1651651561");
-                    workOrderRow.Item().PaddingBottom(10).Text(Properties.Settings_Designer.Default.WorkOrder);
+                    workOrderRow.Item().PaddingBottom(10).Text(Data.WorkOrder);
 
 
 
                     workOrderRow.Item().Text("A/C S/N:    A/C REG:").Bold(); //.Text("03902 / VP - CAN");
-                    workOrderRow.Item().PaddingBottom(10).Text(Properties.Settings_Designer.Default.ACSN);
+                    workOrderRow.Item().PaddingBottom(10).Text(Data.Acsn);
 
                     workOrderRow.Item().Text("TECHNICIAN/STAMP:").Bold();
                     workOrderRow.Item().Text(
-                        $"{Properties.Settings_Designer.Default.TechnicianName} / {Properties.Settings_Designer.Default.TechnicianStamp.ToString()}");
+                        $"{Data.TechnicianName} / {Data.TechnicianStamp.ToString()}");
                 });
                 left.Item().Border(1, Colors.Black).Padding(10).Column(seriesInfo =>
                 {
@@ -150,22 +154,22 @@ public class ReportDocument : IDocument
                     seriesInfo.Item().PaddingBottom(10).Row(timeRow =>
                     {
                         timeRow.RelativeItem().Text("Time").Bold();
-                        timeRow.RelativeItem().Text("-0");
-                        timeRow.RelativeItem().Text("01:01:05");
+                        timeRow.RelativeItem().Text("0");
+                        timeRow.RelativeItem().Text(Data.TestDuration.ToString("g", CultureInfo.InvariantCulture));
                     });
                     
                     seriesInfo.Item().PaddingBottom(10).Row(voltageRow =>
                     {
                         voltageRow.RelativeItem().Text("Voltage").Bold();
-                        voltageRow.RelativeItem().Text("29.044");
-                        voltageRow.RelativeItem().Text("23.399");
+                        voltageRow.RelativeItem().Text(Data.StartVoltage.ToString("F3", CultureInfo.InvariantCulture));
+                        voltageRow.RelativeItem().Text(Data.EndVoltage.ToString("F3", CultureInfo.InvariantCulture));
                     });
 
                     seriesInfo.Item().Row(ampRow =>
                     {
                         ampRow.RelativeItem().Text("Amp").Bold();
-                        ampRow.RelativeItem().Text("0.0");
-                        ampRow.RelativeItem().Text("23.0");
+                        ampRow.RelativeItem().Text(Data.StartAmp.ToString("F3", CultureInfo.InvariantCulture));
+                        ampRow.RelativeItem().Text(Data.EndAmp.ToString("F3", CultureInfo.InvariantCulture));
                     });
                     
                 });
@@ -174,19 +178,19 @@ public class ReportDocument : IDocument
                     seriesInfo.Item().Row(ahRow =>
                     {
                         ahRow.RelativeItem().Text("Ah.").Bold();
-                        ahRow.RelativeItem().Text("23.381");
+                        ahRow.RelativeItem().Text(Data.Ah.ToString("F3", CultureInfo.InvariantCulture));
                     });  
                     seriesInfo.Item().Row(cnRow =>
                     {
                         cnRow.RelativeItem().Text("%Cn").Bold();
-                        cnRow.RelativeItem().Text("101.658");
+                        cnRow.RelativeItem().Text(Data.Ah.ToString("F3", CultureInfo.InvariantCulture));
                     });  
                         
                 });
             });
         
             // CHART CENTER
-            // row.RelativeItem().Image(ChartImagePath);
+            row.RelativeItem().Image(ChartImagePath);
         
             // RIGHT OBSERVATION TABLE
             row.ConstantItem(250).Border(1, Colors.Black).AlignRight().Padding(5).Column(right =>

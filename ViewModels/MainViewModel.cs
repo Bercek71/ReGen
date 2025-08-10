@@ -8,6 +8,7 @@ using Microsoft.Win32;
 using QuestPDF.Fluent;
 using ReGen.Extensions;
 using ReGen.Generators;
+using ReGen.Model;
 using ReGen.Validation;
 
 namespace ReGen.ViewModels;
@@ -274,6 +275,7 @@ public class MainViewModel : BaseViewModel
         }
         
         PreviewReport(null!);
+        
     }
     
     private void PreviewReport(object _)
@@ -282,9 +284,42 @@ public class MainViewModel : BaseViewModel
         {
             MessageBox.Show("CSV file does not exist.", "Missing File", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
-        var reportDocument = new ReportDocument(CsvFilePath, Properties.Settings_Designer.Default.TestNumber);
-        reportDocument.SaveFileAndShowDefault($"Test - {Properties.Settings_Designer.Default.TestNumber.ToString()}");
-        Properties.Settings_Designer.Default.TestNumber++;
-        Properties.Settings_Designer.Default.Save();
+        // var reportDocument = new ReportDocument(CsvFilePath, Properties.Settings_Designer.Default.TestNumber);
+        // reportDocument.SaveFileAndShowDefault($"Test - {Properties.Settings_Designer.Default.TestNumber.ToString()}");
+        try
+        {
+            var records = CsvReaderHelper
+                .ReadCsvFile(CsvFilePath)
+                .ToList();
+
+            var path = "C:\\Users\\marek.beran\\Desktop\\Chartts\\chart.png";
+            var pdfData = new PdfData()
+            {
+                Cmm = Cmm,
+                Ah = 1.51651,
+                EndVoltage = 54.15616,
+                StartAmp = 51.1561,
+                LastMaintenance = LastMaintenance,
+                SerialNumber = SerialNumber,
+                TechnicianName = TechnicianName,
+                Acsn = Acsn,
+                WorkOrder = WorkOrder,
+                StartVoltage = 31.23123,
+                TechnicianStamp = TechnicianStamp ?? 0,
+                TestDuration = TimeSpan.FromHours(1),
+                Cn = 31.21,
+                EndAmp = 31.213,
+                MaintenanceCount = MaintenanceCount ?? 0
+            };
+            PlotGenerator.GeneratePlot(records, path);
+            var reportDocument = new ReportDocument(path, Properties.Settings_Designer.Default.TestNumber, pdfData);
+            reportDocument.SaveFileAndShowDefault("test");
+            Properties.Settings_Designer.Default.TestNumber++;
+            Properties.Settings_Designer.Default.Save();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Csv file format error: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 }
