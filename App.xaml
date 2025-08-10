@@ -5,5 +5,8 @@
              >
     <Application.Resources>
         <DropShadowEffect x:Key="DropShadow" Color="Gray" BlurRadius="10" ShadowDepth="5"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <local:BooleanNegationConverter x:Key="BooleanNegationConverter" />
+
     </Application.Resources>
 </Application>

@@ -26,7 +26,9 @@ public class MainViewModel : BaseViewModel
     private string _technicianStampDisplay = Settings_Designer.Default.TechnicianStamp.ToString();
     private string _workOrder = Settings_Designer.Default.WorkOrder;
     private Visibility _updateButtonVisibility = Visibility.Hidden;
-    
+    private bool _isUpdating;
+    private double _updateProgress;
+
     private UpdateManager UpdateManager { get; }
 
     public MainViewModel()
@@ -264,19 +266,42 @@ public class MainViewModel : BaseViewModel
 
     public ICommand UpdateCommand { get; }
 
+    public bool IsUpdating
+    {
+        get => _isUpdating;
+        set
+        {
+            if (value == _isUpdating) return;
+            _isUpdating = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double UpdateProgress
+    {
+        get => _updateProgress;
+        set
+        {
+            if (value.Equals(_updateProgress)) return;
+            _updateProgress = value;
+            OnPropertyChanged();
+        }
+    }
+
     private async void UpdateCommandHandler(object? _)
     {
         var updateInfo =  await UpdateManager.CheckForUpdatesAsync();
-        if (updateInfo != null)
+        if (updateInfo == null) return;
+        IsUpdating = true;
+        //Show window with progress bar
+        await UpdateManager.DownloadUpdatesAsync(updateInfo, i =>
         {
-            //Show window with progress bar
-            await UpdateManager.DownloadUpdatesAsync(updateInfo, i =>
-            {
-            });
-            var asset = UpdateManager.UpdatePendingRestart;
-            MessageBox.Show("Update Installed, restarting now...");
-            UpdateManager.ApplyUpdatesAndRestart(asset);
-        }
+            UpdateProgress = i;
+        });
+        var asset = UpdateManager.UpdatePendingRestart;
+        IsUpdating = false;
+        UpdateManager.ApplyUpdatesAndRestart(asset);
+        
     }
 
     private void LockClickHandler(object? _)
