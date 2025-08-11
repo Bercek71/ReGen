@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:viewModels="clr-namespace:ReGen.ViewModels"
         xmlns:validation="clr-namespace:ReGen.Validation"
-        Title="CSV Report Generator"
-        Width="900" Height="880"
+        Title="EPSU CSV Report Generator"
+        Width="900" Height="780"
         MinWidth="900" MinHeight="800"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
@@ -101,14 +101,14 @@
 
                         <!-- Header Content -->
                         <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                            <TextBlock Text="CSV Report Generator"
+                            <TextBlock Text="EPSU CSV Report Generator"
                                        FontSize="24" FontWeight="Bold"
                                        Foreground="White"
                                        Margin="0,0,0,4" />
-                            <TextBlock Text="Transform your data into beautiful reports"
-                                       FontSize="14"
-                                       Foreground="#FFFFFF90"
-                                       FontWeight="Normal" />
+                            <!-- <TextBlock Text="Transform your data into beautiful reports" -->
+                            <!--            FontSize="14" -->
+                            <!--            Foreground="#FFFFFF90" -->
+                            <!--            FontWeight="Normal" /> -->
                         </StackPanel>
 
                         <!-- Window Controls -->
@@ -441,23 +441,23 @@
                 </ScrollViewer>
 
                 <!-- Footer -->
-                <Border Grid.Row="2"
-                        Background="{StaticResource SurfaceBrush}"
-                        CornerRadius="0,0,16,16"
-                        Margin="-32,0,-32,-32"
-                        Padding="32,16,32,24"
-                        BorderBrush="{StaticResource BorderBrush}"
-                        BorderThickness="0,1,0,0">
-                    <StackPanel HorizontalAlignment="Center">
-                        <TextBlock Text="Made with ❤️ using WPF &amp; Modern Design"
-                                   Style="{StaticResource Footer}" />
-                        <TextBlock Text="v2.0.0 • Built for productivity"
-                                   FontSize="10"
-                                   Foreground="{StaticResource TextMutedBrush}"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,4,0,0" />
-                    </StackPanel>
-                </Border>
+                <!-- <Border Grid.Row="2" -->
+                <!--         Background="{StaticResource SurfaceBrush}" -->
+                <!--         CornerRadius="0,0,16,16" -->
+                <!--         Margin="-32,0,-32,-32" -->
+                <!--         Padding="32,16,32,24" -->
+                <!--         BorderBrush="{StaticResource BorderBrush}" -->
+                <!--         BorderThickness="0,1,0,0"> -->
+                <!--     <StackPanel HorizontalAlignment="Center"> -->
+                <!--         <TextBlock Text="Made with ❤️ using WPF &amp; Modern Design" -->
+                <!--                    Style="{StaticResource Footer}" /> -->
+                <!--         <TextBlock Text="v2.0.0 • Built for productivity" -->
+                <!--                    FontSize="10" -->
+                <!--                    Foreground="{StaticResource TextMutedBrush}" -->
+                <!--                    HorizontalAlignment="Center" -->
+                <!--                    Margin="0,4,0,0" /> -->
+                <!--     </StackPanel> -->
+                <!-- </Border> -->
             </Grid>
         </Border>
     </Grid>
