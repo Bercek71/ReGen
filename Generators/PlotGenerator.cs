@@ -26,7 +26,8 @@ public static class PlotGenerator
 
         // Create ScottPlot 5 plot
         var plt = new Plot();
-        plt.Add.ScatterLine(xs, ys, Colors.Blue);
+        var scatter = plt.Add.ScatterLine(xs, ys, Colors.Black);
+        scatter.LineWidth = 5;
         plt.XLabel("Time (seconds)");
         plt.YLabel("Voltage (V)");
 

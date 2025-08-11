@@ -129,5 +129,29 @@ namespace ReGen.Properties {
                 this["MaintenanceCount"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BatteryPn {
+            get {
+                return ((string)(this["BatteryPn"]));
+            }
+            set {
+                this["BatteryPn"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AMDT {
+            get {
+                return ((string)(this["AMDT"]));
+            }
+            set {
+                this["AMDT"] = value;
+            }
+        }
     }
 }

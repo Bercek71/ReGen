@@ -30,5 +30,11 @@
         <Setting Name="MaintenanceCount" Type="System.Int32" Scope="User">
             <Value Profile="(Default)">1</Value>
         </Setting>
+        <Setting Name="BatteryPn" Type="System.String" Scope="User">
+            <Value Profile="(Default)"/>
+        </Setting>
+        <Setting Name="AMDT" Type="System.String" Scope="User">
+            <Value Profile="(Default)"/>
+        </Setting>
     </Settings>
 </SettingsFile>

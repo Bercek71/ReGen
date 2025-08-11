@@ -28,6 +28,8 @@ public class MainViewModel : BaseViewModel
     private Visibility _updateButtonVisibility = Visibility.Hidden;
     private double _updateProgress;
     private string _workOrder = Settings_Designer.Default.WorkOrder;
+    private string _batteryPn = Settings_Designer.Default.BatteryPn;
+    private string _amdt = Settings_Designer.Default.AMDT;
 
     public MainViewModel()
     {
@@ -256,6 +258,32 @@ public class MainViewModel : BaseViewModel
         }
     }
 
+    public string BatteryPn
+    {
+        get => _batteryPn;
+        set
+        {
+            if (value == _batteryPn) return;
+            _batteryPn = value;
+            OnPropertyChanged();
+            Properties.Settings_Designer.Default.BatteryPn = value;
+            Properties.Settings_Designer.Default.Save();
+        }
+    }
+
+    public string Amdt
+    {
+        get => _amdt;
+        set
+        {
+            if (value == _amdt) return;
+            _amdt = value;
+            OnPropertyChanged();
+            Properties.Settings_Designer.Default.AMDT = value;
+            Properties.Settings_Designer.Default.Save();
+        }
+    }
+
     private async void CheckForUpdate()
     {
         try
@@ -375,8 +403,8 @@ public class MainViewModel : BaseViewModel
             var pdfData = new PdfData(records)
             {
                 Cmm = Cmm,
-                Ah = 1.51651,
-
+                Amdt = Amdt,
+                BatteryPn = BatteryPn,
                 LastMaintenance = LastMaintenance,
                 SerialNumber = SerialNumber,
                 TechnicianName = TechnicianName,
@@ -384,8 +412,6 @@ public class MainViewModel : BaseViewModel
                 WorkOrder = WorkOrder,
                 TechnicianStamp = TechnicianStamp == int.MinValue ? 0 : TechnicianStamp,
                 MaintenanceCount = MaintenanceCount == int.MinValue ? 0 : MaintenanceCount,
-
-                Cn = 31.21
             };
 
             var testNumber = Settings_Designer.Default.TestNumber;

@@ -77,15 +77,15 @@ public class ReportDocument : IDocument
                             {
                                 dateRow.RelativeItem().Column(labelCol => labelCol.Item().Text("Date:").ExtraBold());
                                 dateRow.RelativeItem().Column(labelCol =>
-                                    labelCol.Item().Text($"{dateNow.Day}/{dateNow.Month}/{dateNow.Year}"));
+                                    labelCol.Item().Text($"{dateNow.Month}/{dateNow.Day}/{dateNow.Year}"));
                             });
                         });
                     });
                     row.RelativeItem().Border(1, Colors.Black).BorderLeft(0).Padding(5).AlignCenter().Row(infoRow =>
                     {
-                        infoRow.RelativeItem().Text("P.N. : 3214-31");
+                        infoRow.RelativeItem().Text($"P.N. : {Data.BatteryPn}");
                         infoRow.RelativeItem().Text($"S.N. : {Data.SerialNumber}");
-                        infoRow.RelativeItem().AlignLeft().Text("AMDT: E");
+                        infoRow.RelativeItem().AlignLeft().Text($"AMDT: {Data.Amdt}");
                     });
                     row.ConstantItem(190).AlignRight().Border(1, Colors.Black).BorderLeft(0).Padding(5).Row(infoRow =>
                     {
@@ -122,7 +122,7 @@ public class ReportDocument : IDocument
                 col.Item().Border(1, Colors.Black).AlignCenter().Padding(5).Column(dischargeInfoCol =>
                 {
                     dischargeInfoCol.Item().Text("Discharge Constant Current 6.00A.").AlignCenter();
-                    dischargeInfoCol.Item().Text("Threshold: 00:40:00 Vmin=5V.Tmin=10°C Tmax=45°C").AlignCenter();
+                    dischargeInfoCol.Item().Text("Threshold: 00:40:00 Vmin=5V Tmin=10°C Tmax=45°C").AlignCenter();
                 });
 
 
@@ -181,7 +181,7 @@ public class ReportDocument : IDocument
                             seriesInfo.Item().Row(cnRow =>
                             {
                                 cnRow.RelativeItem().Text("%Cn").Bold();
-                                cnRow.RelativeItem().Text(Data.Ah.ToString("F3", CultureInfo.InvariantCulture));
+                                cnRow.RelativeItem().Text(Data.Cn.ToString("F3", CultureInfo.InvariantCulture));
                             });
                         });
                     });
@@ -198,23 +198,23 @@ public class ReportDocument : IDocument
                             headerRow.ConstantItem(50).AlignCenter().Text("PASS").Bold();
                             headerRow.ConstantItem(50).AlignCenter().Text("FAULT").Bold();
                         });
-                        right.Item().PaddingBottom(10).Row(visualInspectionCol =>
+                        right.Item().PaddingBottom(30).Row(visualInspectionCol =>
                         {
-                            visualInspectionCol.RelativeItem().Text("1. Visual inspection");
+                            visualInspectionCol.RelativeItem().Text("1. VISUAL INSPECTION");
                             visualInspectionCol.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
                             visualInspectionCol.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
                         });
 
-                        right.Item().PaddingBottom(10).Row(insulationTest =>
+                        right.Item().PaddingBottom(30).Row(insulationTest =>
                         {
-                            insulationTest.RelativeItem().Text("2. INSULATION TEST \n VALUE: \u2610 MΩ");
+                            insulationTest.RelativeItem().Text("2. INSULATION TEST \n\n VALUE:                              MΩ");
                             insulationTest.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
                             insulationTest.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
                         });
 
-                        right.Item().PaddingBottom(10).Row(outputVoltageTest =>
+                        right.Item().PaddingBottom(30).Row(outputVoltageTest =>
                         {
-                            outputVoltageTest.RelativeItem().Text("3. OUTPUT VOLTAGE TEST \n VALUE: \u2610 V DC");
+                            outputVoltageTest.RelativeItem().Text("3. OUTPUT VOLTAGE TEST \n\n VALUE:                              V DC");
                             outputVoltageTest.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
                             outputVoltageTest.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
                         });
