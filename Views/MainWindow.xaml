@@ -281,7 +281,6 @@
                                     Grid.Column="2"
                                     Grid.Row="1"
                                     HorizontalScrollBarVisibility="Disabled"
-                                    IsEnabled="{Binding IsRestrictedFieldEditEnabled}"
                                     Style="{StaticResource ModernTextBox}"
                                     Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}" />
                                 
