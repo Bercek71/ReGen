@@ -4,8 +4,8 @@
         xmlns:viewModels="clr-namespace:ReGen.ViewModels"
         xmlns:validation="clr-namespace:ReGen.Validation"
         Title="EPSU CSV Report Generator"
-        Width="900" Height="780"
-        MinWidth="900" MinHeight="800"
+        Width="750" Height="700"
+        MinWidth="750" MinHeight="754"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -35,17 +35,17 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
-        <Grid Grid.Column="0" x:Name="UpdateProgressPopup"
+        <Grid Grid.Column="0"
               Background="#80000000"
               HorizontalAlignment="Stretch"
               Visibility="{Binding IsUpdating, Converter={StaticResource BooleanToVisibilityConverter}}"
               VerticalAlignment="Stretch"
               Panel.ZIndex="10">
 
-            <Border Width="300" Height="120"
+            <Border Width="280" Height="110"
                     Background="{StaticResource SurfaceBrush}"
                     CornerRadius="12"
-                    Padding="20"
+                    Padding="20, 20, 20, 0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Effect="{StaticResource WindowShadow}">
@@ -81,6 +81,9 @@
                 MouseLeftButtonDown="DragWindow">
 
             <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
@@ -141,7 +144,7 @@
                               Focusable="False"
                               VerticalScrollBarVisibility="Auto"
                               HorizontalScrollBarVisibility="Disabled"
-                              Padding="1,15,1,8">
+                              Padding="1,0,1,8">
 
                     <StackPanel
                         Width="650"
@@ -423,7 +426,7 @@
                         <!-- Action Buttons -->
                         <StackPanel Orientation="Horizontal"
                                     HorizontalAlignment="Center"
-                                    Margin="0,16,0,0">
+                                    Margin="0,0,0,0">
                             <Button Content="🚀 Generate Report"
                                     IsEnabled="{Binding IsGenerateButtonEnabled}"
                                     Style="{StaticResource SuccessButton}"
