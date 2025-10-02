@@ -2,9 +2,9 @@
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
+using ReGen.Dtos;
 using ReGen.Extensions;
 using ReGen.Generators;
-using ReGen.Model;
 using ReGen.Properties;
 using Velopack;
 

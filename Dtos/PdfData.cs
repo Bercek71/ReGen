@@ -1,4 +1,4 @@
-﻿namespace ReGen.Model;
+﻿namespace ReGen.Dtos;
 
 public class PdfData
 {
@@ -15,11 +15,11 @@ public class PdfData
 
         StartAmp = records.FirstOrDefault(rec => rec.TotalTime == minTimeStep)?.I ?? 0;
         EndAmp = records.FirstOrDefault(rec => rec.TotalTime == maxTimeStep)?.I ?? 0;
-        TestDuration = maxTimeStep - minTimeStep;
+        TestDuration = TimeSpan.FromSeconds(records.Count);
 
         Ah = records.FirstOrDefault(rec => rec.TotalTime == maxTimeStep)?.Ah ?? 0;
 
-        Cn = Ah * 100 / 5;
+        Cn = Ah * 100 / 4;
 
     }
 

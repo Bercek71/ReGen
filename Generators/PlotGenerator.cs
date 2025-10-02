@@ -1,4 +1,4 @@
-﻿using ReGen.Model;
+﻿using ReGen.Dtos;
 using ScottPlot;
 using ScottPlot.TickGenerators;
 
@@ -10,7 +10,7 @@ public static class PlotGenerator
     ///     Generates a plot as a PNG byte array for insertion into PDFs.
     /// </summary>
     public static void GeneratePlot(List<CsvRecord> csvRecords,
-        string filePath = "C:\\Users\\marek.beran\\Desktop\\Chartts\\chart.png")
+        string filePath)
     {
         if (csvRecords.Count == 0)
             throw new InvalidOperationException("CSV file contains no data.");

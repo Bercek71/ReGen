@@ -4,7 +4,7 @@ using System.Reflection;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
-using ReGen.Model;
+using ReGen.Dtos;
 using ReGen.Properties;
 
 namespace ReGen.Generators;
@@ -44,7 +44,7 @@ public class ReportDocument : IDocument
             page.Content().Column(col =>
             {
                 // HEADER
-                col.Item().Border(1, Colors.Black).Padding(10).Row(row =>
+                col.Item().Border(1, Colors.Black).BorderLeft(2).Padding(10).Row(row =>
                 {
                     var logoBytes = LoadEmbeddedImage("ReGen.Resources.logo.jpg");
                     row.RelativeItem().AlignLeft().Column(left => { left.Item().Height(50).Width(155).Image(logoBytes); });
@@ -62,7 +62,7 @@ public class ReportDocument : IDocument
 
                 col.Item().Row(row =>
                 {
-                    row.ConstantItem(150).Border(1, Colors.Black).Row(row1 =>
+                    row.ConstantItem(150).BorderLeft(2).Border(1, Colors.Black).BorderLeft(2).Row(row1 =>
                     {
                         row1.ConstantItem(150).Padding(5).Column(infoCol =>
                         {
@@ -77,7 +77,7 @@ public class ReportDocument : IDocument
                             {
                                 dateRow.RelativeItem().Column(labelCol => labelCol.Item().Text("Date:").ExtraBold());
                                 dateRow.RelativeItem().Column(labelCol =>
-                                    labelCol.Item().Text($"{dateNow.Month}/{dateNow.Day}/{dateNow.Year}"));
+                                    labelCol.Item().Text(dateNow.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)));
                             });
                         });
                     });
@@ -106,7 +106,7 @@ public class ReportDocument : IDocument
                                     .Column(labelCol => labelCol.Item().Text("Last maintenance:"));
 
                                 lastMaintenanceRow.RelativeItem().Column(labelCol =>
-                                    labelCol.Item().Text($"{lastDate.Month}/{lastDate.Day}/{lastDate.Year}"));
+                                    labelCol.Item().Text(lastDate.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)));
                             });
 
                             infoCol.Item().Row(maintenanceCountRow =>
@@ -119,7 +119,7 @@ public class ReportDocument : IDocument
                         });
                     });
                 });
-                col.Item().Border(1, Colors.Black).AlignCenter().Padding(5).Column(dischargeInfoCol =>
+                col.Item().Border(1, Colors.Black).BorderLeft(2).AlignCenter().Padding(5).Column(dischargeInfoCol =>
                 {
                     dischargeInfoCol.Item().Text("Discharge Constant Current 6.00A.").AlignCenter();
                     dischargeInfoCol.Item().Text("Threshold: 00:40:00 Vmin=5V Tmin=10°C Tmax=45°C").AlignCenter();
@@ -132,7 +132,7 @@ public class ReportDocument : IDocument
                     // LEFT DATA TABLE
                     row.ConstantItem(150).Column(left =>
                     {
-                        left.Item().Border(1, Colors.Black).Padding(10).Column(workOrderRow =>
+                        left.Item().Border(1,Colors.Black).BorderRight(3).BorderLeft(2).Padding(10).Column(workOrderRow =>
                         {
                             workOrderRow.Item().Text("WORK ORDER NO:").Bold(); //.Text("1651651561");
                             workOrderRow.Item().PaddingBottom(10).Text(Data.WorkOrder);
@@ -145,7 +145,7 @@ public class ReportDocument : IDocument
                             workOrderRow.Item().Text(
                                 $"{Data.TechnicianName} / {Data.TechnicianStamp.ToString()}");
                         });
-                        left.Item().Border(1, Colors.Black).Padding(10).Column(seriesInfo =>
+                        left.Item().Border(1, Colors.Black).BorderRight(3).BorderLeft(2).Padding(10).Column(seriesInfo =>
                         {
                             seriesInfo.Item().PaddingBottom(10).Row(timeRow =>
                             {
@@ -171,7 +171,7 @@ public class ReportDocument : IDocument
                                 ampRow.RelativeItem().Text(Data.EndAmp.ToString("F3", CultureInfo.InvariantCulture));
                             });
                         });
-                        left.Item().Border(1, Colors.Black).Padding(10).Column(seriesInfo =>
+                        left.Item().Border(1, Colors.Black).BorderRight(3).BorderLeft(2).Padding(10).Column(seriesInfo =>
                         {
                             seriesInfo.Item().Row(ahRow =>
                             {

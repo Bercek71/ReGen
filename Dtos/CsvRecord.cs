@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace ReGen.Model;
+namespace ReGen.Dtos;
 
 public class CsvRecord(RawCsvRecord rawRecord)
 {

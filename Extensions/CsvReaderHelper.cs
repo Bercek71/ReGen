@@ -2,7 +2,7 @@
 using System.IO;
 using CsvHelper;
 using CsvHelper.Configuration;
-using ReGen.Model;
+using ReGen.Dtos;
 
 namespace ReGen.Extensions;
 

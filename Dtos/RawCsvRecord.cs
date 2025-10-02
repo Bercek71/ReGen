@@ -1,4 +1,4 @@
-﻿namespace ReGen.Model;
+﻿namespace ReGen.Dtos;
 
 public class RawCsvRecord
 {
