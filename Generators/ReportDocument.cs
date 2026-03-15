@@ -190,40 +190,69 @@ public class ReportDocument : IDocument
                     row.RelativeItem().Image(ChartImagePath);
 
                     // RIGHT OBSERVATION TABLE
-                    row.ConstantItem(250).Border(1, Colors.Black).AlignRight().Padding(5).Column(right =>
+                    row.ConstantItem(250)
+                        .Border(1, Colors.Black)
+                        .AlignRight()
+                        .Padding(5)
+                        .Column(right =>
                     {
+                        const int checkBoxSpacing = 33;
                         right.Item().AlignRight().Row(headerRow =>
                         {
                             headerRow.RelativeItem();
-                            headerRow.ConstantItem(50).AlignCenter().Text("PASS").Bold();
-                            headerRow.ConstantItem(50).AlignCenter().Text("FAULT").Bold();
+                            headerRow.ConstantItem(checkBoxSpacing).AlignCenter().Text("PASS").Bold();
+                            headerRow.ConstantItem(checkBoxSpacing).AlignCenter().Text("FAULT").Bold();
+                            headerRow.ConstantItem(checkBoxSpacing).AlignCenter().Text("N/A").Bold();
+
                         });
                         right.Item().PaddingBottom(30).Row(visualInspectionCol =>
                         {
                             visualInspectionCol.RelativeItem().Text("1. VISUAL INSPECTION");
-                            visualInspectionCol.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
-                            visualInspectionCol.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
+                            visualInspectionCol.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
+                            visualInspectionCol.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
+                            visualInspectionCol.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
+
                         });
 
                         right.Item().PaddingBottom(30).Row(insulationTest =>
                         {
                             insulationTest.RelativeItem().Text("2. INSULATION TEST \n\n VALUE:                              MΩ");
-                            insulationTest.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
-                            insulationTest.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
+                            insulationTest.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
+                            insulationTest.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
+                            insulationTest.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
+
                         });
 
                         right.Item().PaddingBottom(30).Row(outputVoltageTest =>
                         {
                             outputVoltageTest.RelativeItem().Text("3. OUTPUT VOLTAGE TEST \n\n VALUE:                              V DC");
-                            outputVoltageTest.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
-                            outputVoltageTest.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
+                            outputVoltageTest.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
+                            outputVoltageTest.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
+                            outputVoltageTest.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
+
                         });
 
                         right.Item().Row(capacityTest =>
                         {
                             capacityTest.RelativeItem().Text("4. CAPACITY TEST");                            
-                            capacityTest.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
-                            capacityTest.ConstantItem(50).AlignCenter().Text("\u2610"); // Empty checkbox
+                            capacityTest.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
+                            capacityTest.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
+                            capacityTest.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
+
+                        });
+                        
+
+                        right.Item()
+                            .AlignBottom()
+                            .PaddingTop(155)
+                            .Row(noteRow =>
+                        {
+                            const string note = "NOTE: THE INSULATION TEST CAUSES STRESS TO THE BATTERY. " +
+                                                "DO THIS TEST ONLY IF THE VERIFICATION OF THE INSULATION RESISTANCE " +
+                                                "IS MANDATORY, I.E. AFTER REPAIR WORK THAT HAS AN EFFECT ON " +
+                                                "THE INSULATION RESISTANCE.";
+                            
+                            noteRow.RelativeItem().Text(note).FontSize(7);
                         });
                     });
                 });

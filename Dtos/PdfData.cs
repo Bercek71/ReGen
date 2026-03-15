@@ -17,7 +17,8 @@ public class PdfData
         EndAmp = records.FirstOrDefault(rec => rec.TotalTime == maxTimeStep)?.I ?? 0;
         TestDuration = TimeSpan.FromSeconds(records.Count);
 
-        Ah = records.FirstOrDefault(rec => rec.TotalTime == maxTimeStep)?.Ah ?? 0;
+        // + 1 requirement from 15.3.2026
+        Ah = records.FirstOrDefault(rec => rec.TotalTime == maxTimeStep)?.Ah + 1 ?? 0;
 
         Cn = Ah * 100 / 4;
 
