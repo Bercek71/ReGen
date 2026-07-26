@@ -82,7 +82,7 @@
 
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -177,7 +177,7 @@
                                     <ColumnDefinition Width="16" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                
+
                                 <TextBlock Grid.Column="0" Grid.Row="0" Text="WORK ORDER NO."
                                            Style="{StaticResource FormLabel}" />
                                 <TextBox
@@ -230,36 +230,37 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                                
-                                
-                                <TextBlock Grid.Column="0" Grid.Row="0" Text="A/C S/N ; A/C REG" Style="{StaticResource FormLabel}" />
+
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="A/C S/N ; A/C REG"
+                                           Style="{StaticResource FormLabel}" />
                                 <TextBox
                                     Grid.Column="0"
                                     Grid.Row="1"
                                     HorizontalScrollBarVisibility="Disabled"
                                     Style="{StaticResource ModernTextBox}"
                                     Text="{Binding Acsn, UpdateSourceTrigger=PropertyChanged}" />
-                                
-                                <TextBlock Grid.Column="2" Grid.Row="0" Text="Test Number" Style="{StaticResource FormLabel}" />
+
+                                <TextBlock Grid.Column="2" Grid.Row="0" Text="Test Number"
+                                           Style="{StaticResource FormLabel}" />
                                 <TextBox
                                     IsEnabled="{Binding IsRestrictedFieldEditEnabled}"
                                     Grid.Column="2"
                                     Grid.Row="1"
                                     HorizontalScrollBarVisibility="Disabled"
                                     Style="{StaticResource ModernTextBox}">
-                                <TextBox.Text>
-                                    <Binding Path="TestNumberDisplay" UpdateSourceTrigger="PropertyChanged"
-                                             ValidatesOnDataErrors="True"
-                                             Mode="TwoWay">
-                                        <Binding.ValidationRules>
-                                            <validation:UlongValidation />
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBox.Text>
+                                    <TextBox.Text>
+                                        <Binding Path="TestNumberDisplay" UpdateSourceTrigger="PropertyChanged"
+                                                 ValidatesOnDataErrors="True"
+                                                 Mode="TwoWay">
+                                            <Binding.ValidationRules>
+                                                <validation:UlongValidation />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
                                 </TextBox>
                             </Grid>
                         </StackPanel>
-                        
+
                         <!-- Battery info -->
                         <StackPanel Style="{StaticResource InputGroup}">
                             <Grid>
@@ -275,7 +276,7 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                                
+
                                 <TextBlock Grid.Row="0" Grid.Column="0" Text="BATTERY P.N."
                                            Style="{StaticResource FormLabel}" />
                                 <TextBox
@@ -285,7 +286,7 @@
                                     IsEnabled="{Binding IsRestrictedFieldEditEnabled}"
                                     Style="{StaticResource ModernTextBox}"
                                     Text="{Binding BatteryPn, UpdateSourceTrigger=PropertyChanged}" />
-                                
+
 
                                 <TextBlock Grid.Row="0" Grid.Column="2" Text="S.N."
                                            Style="{StaticResource FormLabel}" />
@@ -295,10 +296,10 @@
                                     HorizontalScrollBarVisibility="Disabled"
                                     Style="{StaticResource ModernTextBox}"
                                     Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}" />
-                                
+
                                 <TextBlock Grid.Column="4" Grid.Row="0" Text="AMDT"
                                            Style="{StaticResource FormLabel}" />
-                                
+
                                 <TextBox
                                     Grid.Column="4"
                                     Grid.Row="1"
@@ -324,7 +325,7 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                                
+
                                 <TextBlock Grid.Row="0" Grid.Column="0" Text="C.M.M."
                                            Style="{StaticResource FormLabel}" />
                                 <TextBox
@@ -334,7 +335,7 @@
                                     IsEnabled="{Binding IsRestrictedFieldEditEnabled}"
                                     Style="{StaticResource ModernTextBox}"
                                     Text="{Binding Cmm, UpdateSourceTrigger=PropertyChanged}" />
-                                
+
 
                                 <TextBlock Grid.Row="0" Grid.Column="2" Text="Last Maintenance"
                                            Style="{StaticResource FormLabel}" />
@@ -345,10 +346,10 @@
                                     Style="{StaticResource ModernDatePicker}"
                                     SelectedDate="{Binding LastMaintenance, UpdateSourceTrigger=PropertyChanged, StringFormat='MM/dd/yyyy'}"
                                     Language="en-US" />
-                                
+
                                 <TextBlock Grid.Column="4" Grid.Row="0" Text="Maintenance Count"
                                            Style="{StaticResource FormLabel}" />
-                                
+
                                 <TextBox
                                     Grid.Column="4"
                                     Grid.Row="1"
@@ -365,7 +366,6 @@
                                         </Binding>
                                     </TextBox.Text>
                                 </TextBox>
-
 
 
                             </Grid>

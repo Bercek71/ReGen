@@ -6,9 +6,11 @@ using ReGen.Dtos;
 
 namespace ReGen.Extensions;
 
+public sealed record CsvReadResult(IReadOnlyList<CsvRecord> Records, int SkippedRows);
+
 public static class CsvReaderHelper
 {
-    public static IEnumerable<CsvRecord> ReadCsvFile(string csvFilePath)
+    public static CsvReadResult ReadCsvFile(string csvFilePath)
     {
         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
@@ -16,7 +18,7 @@ public static class CsvReaderHelper
             IgnoreBlankLines = true,
             TrimOptions = TrimOptions.Trim
         };
-        // Read CSV
+
         List<RawCsvRecord> records;
         using (var reader = new StreamReader(csvFilePath))
         using (var csv = new CsvReader(reader, config))
@@ -24,6 +26,15 @@ public static class CsvReaderHelper
             records = csv.GetRecords<RawCsvRecord>().ToList();
         }
 
-        return records.Select(record => new CsvRecord(record));
+        var parsedRecords = new List<CsvRecord>();
+        var skippedRows = 0;
+
+        foreach (var record in records)
+            if (CsvRecord.TryCreate(record, out var csvRecord))
+                parsedRecords.Add(csvRecord);
+            else
+                skippedRows++;
+
+        return new CsvReadResult(parsedRecords, skippedRows);
     }
 }

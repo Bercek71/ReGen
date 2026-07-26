@@ -9,7 +9,7 @@ public static class PlotGenerator
     /// <summary>
     ///     Generates a plot as a PNG byte array for insertion into PDFs.
     /// </summary>
-    public static void GeneratePlot(List<CsvRecord> csvRecords,
+    public static void GeneratePlot(IReadOnlyList<CsvRecord> csvRecords,
         string filePath)
     {
         if (csvRecords.Count == 0)
@@ -43,11 +43,11 @@ public static class PlotGenerator
 // Automatické určení intervalu podle délky dat
         var interval = maxTime switch
         {
-            <= 60 => 10,      // Do 1 minuty: každých 10 sekund
-            <= 300 => 30,     // Do 5 minut: každých 30 sekund
-            <= 600 => 60,     // Do 10 minut: každou minutu
-            <= 1800 => 180,   // Do 30 minut: každé 3 minuty
-            _ => 300          // Více než 30 minut: každých 5 minut
+            <= 60 => 10, // Do 1 minuty: každých 10 sekund
+            <= 300 => 30, // Do 5 minut: každých 30 sekund
+            <= 600 => 60, // Do 10 minut: každou minutu
+            <= 1800 => 180, // Do 30 minut: každé 3 minuty
+            _ => 300 // Více než 30 minut: každých 5 minut
         };
 
         for (double t = 0; t <= maxTime; t += interval)

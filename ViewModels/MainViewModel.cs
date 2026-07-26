@@ -13,6 +13,8 @@ namespace ReGen.ViewModels;
 public class MainViewModel : BaseViewModel
 {
     private string _acsn = Settings_Designer.Default.ACSN;
+    private string _amdt = Settings_Designer.Default.AMDT;
+    private string _batteryPn = Settings_Designer.Default.BatteryPn;
     private string _cmm = Settings_Designer.Default.CMM;
     private string _csvFilePath = string.Empty;
     private bool _isGenerateButtonEnabled = true;
@@ -25,12 +27,10 @@ public class MainViewModel : BaseViewModel
     private string _technicianName = Settings_Designer.Default.TechnicianName;
 
     private string _technicianStampDisplay = Settings_Designer.Default.TechnicianStamp.ToString();
+    private string _testNumberDisplay = Settings_Designer.Default.TestNumber.ToString();
     private Visibility _updateButtonVisibility = Visibility.Hidden;
     private double _updateProgress;
     private string _workOrder = Settings_Designer.Default.WorkOrder;
-    private string _batteryPn = Settings_Designer.Default.BatteryPn;
-    private string _amdt = Settings_Designer.Default.AMDT;
-    private string _testNumberDisplay = Settings_Designer.Default.TestNumber.ToString();
 
     public MainViewModel()
     {
@@ -267,8 +267,8 @@ public class MainViewModel : BaseViewModel
             if (value == _batteryPn) return;
             _batteryPn = value;
             OnPropertyChanged();
-            Properties.Settings_Designer.Default.BatteryPn = value;
-            Properties.Settings_Designer.Default.Save();
+            Settings_Designer.Default.BatteryPn = value;
+            Settings_Designer.Default.Save();
         }
     }
 
@@ -280,16 +280,16 @@ public class MainViewModel : BaseViewModel
             if (value == _amdt) return;
             _amdt = value;
             OnPropertyChanged();
-            Properties.Settings_Designer.Default.AMDT = value;
-            Properties.Settings_Designer.Default.Save();
+            Settings_Designer.Default.AMDT = value;
+            Settings_Designer.Default.Save();
         }
     }
 
     #region TestNumberDisplay
-    
+
     public string TestNumberDisplay
     {
-        get => _testNumberDisplay.ToString();
+        get => _testNumberDisplay;
         set
         {
             if (_testNumberDisplay == value) return;
@@ -415,9 +415,21 @@ public class MainViewModel : BaseViewModel
 
         try
         {
-            var records = CsvReaderHelper
-                .ReadCsvFile(CsvFilePath)
-                .ToList();
+            var csvReadResult = CsvReaderHelper.ReadCsvFile(CsvFilePath);
+            var records = csvReadResult.Records;
+
+            if (records.Count == 0)
+                throw new InvalidOperationException(
+                    csvReadResult.SkippedRows > 0
+                        ? $"CSV contains no valid rows ({csvReadResult.SkippedRows} rows skipped due to missing values)."
+                        : "CSV contains no data.");
+
+            if (csvReadResult.SkippedRows > 0)
+                MessageBox.Show(
+                    $"{csvReadResult.SkippedRows} row(s) with missing or invalid values were skipped from the CSV.",
+                    "Warning",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
 
             var pdfData = new PdfData(records)
             {
@@ -430,7 +442,7 @@ public class MainViewModel : BaseViewModel
                 Acsn = Acsn,
                 WorkOrder = WorkOrder,
                 TechnicianStamp = TechnicianStamp == int.MinValue ? 0 : TechnicianStamp,
-                MaintenanceCount = MaintenanceCount == int.MinValue ? 0 : MaintenanceCount,
+                MaintenanceCount = MaintenanceCount == int.MinValue ? 0 : MaintenanceCount
             };
 
             var testNumber = Settings_Designer.Default.TestNumber;
@@ -444,9 +456,8 @@ public class MainViewModel : BaseViewModel
 
             Settings_Designer.Default.TestNumber++;
             Settings_Designer.Default.Save();
-            
-            TestNumberDisplay = Settings_Designer.Default.TestNumber.ToString();
 
+            TestNumberDisplay = Settings_Designer.Default.TestNumber.ToString();
         }
         catch (Exception ex)
         {

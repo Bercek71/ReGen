@@ -1,10 +1,9 @@
 ﻿<Application x:Class="ReGen.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:ReGen"
-             >
+             xmlns:local="clr-namespace:ReGen">
     <Application.Resources>
-        <DropShadowEffect x:Key="DropShadow" Color="Gray" BlurRadius="10" ShadowDepth="5"/>
+        <DropShadowEffect x:Key="DropShadow" Color="Gray" BlurRadius="10" ShadowDepth="5" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <local:BooleanNegationConverter x:Key="BooleanNegationConverter" />
 

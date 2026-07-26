@@ -1,9 +1,4 @@
-﻿using System.Drawing;
-using System.Windows;
-using QuestPDF.Infrastructure;
-using ReGen.Extensions;
-using ReGen.Views;
-using Velopack;
+﻿using System.Windows;
 
 namespace ReGen;
 

@@ -16,28 +16,28 @@
         <Page Include="App.xaml"/>
     </ItemGroup>
     <ItemGroup>
-      <Page Update="Views\MainWindow.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Update="Style\Styles.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
+        <Page Update="Views\MainWindow.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Style\Styles.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="CsvHelper" Version="33.1.0" />
-      <PackageReference Include="QuestPDF" Version="2025.7.0" />
-      <PackageReference Include="ScottPlot" Version="5.0.55" />
-      <PackageReference Include="Velopack" Version="0.0.1298" />
+        <PackageReference Include="CsvHelper" Version="33.1.0"/>
+        <PackageReference Include="QuestPDF" Version="2025.7.0"/>
+        <PackageReference Include="ScottPlot" Version="5.0.55"/>
+        <PackageReference Include="Velopack" Version="0.0.1298"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Resources\logo.jpg" />
-      <EmbeddedResource Include="Resources\logo.jpg" />
+        <None Remove="Resources\logo.jpg"/>
+        <EmbeddedResource Include="Resources\logo.jpg"/>
     </ItemGroup>
 
 </Project>

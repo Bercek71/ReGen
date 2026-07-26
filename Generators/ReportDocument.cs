@@ -47,7 +47,10 @@ public class ReportDocument : IDocument
                 col.Item().Border(1, Colors.Black).BorderLeft(2).Padding(10).Row(row =>
                 {
                     var logoBytes = LoadEmbeddedImage("ReGen.Resources.logo.jpg");
-                    row.RelativeItem().AlignLeft().Column(left => { left.Item().Height(50).Width(155).Image(logoBytes); });
+                    row.RelativeItem().AlignLeft().Column(left =>
+                    {
+                        left.Item().Height(50).Width(155).Image(logoBytes);
+                    });
 
                     row.RelativeItem().Column(center => { center.Item().Text("Shop Report").FontSize(24).Bold(); });
 
@@ -106,7 +109,8 @@ public class ReportDocument : IDocument
                                     .Column(labelCol => labelCol.Item().Text("Last maintenance:"));
 
                                 lastMaintenanceRow.RelativeItem().Column(labelCol =>
-                                    labelCol.Item().Text(lastDate.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)));
+                                    labelCol.Item()
+                                        .Text(lastDate.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)));
                             });
 
                             infoCol.Item().Row(maintenanceCountRow =>
@@ -132,58 +136,63 @@ public class ReportDocument : IDocument
                     // LEFT DATA TABLE
                     row.ConstantItem(150).Column(left =>
                     {
-                        left.Item().Border(1,Colors.Black).BorderRight(3).BorderLeft(2).Padding(10).Column(workOrderRow =>
-                        {
-                            workOrderRow.Item().Text("WORK ORDER NO:").Bold(); //.Text("1651651561");
-                            workOrderRow.Item().PaddingBottom(10).Text(Data.WorkOrder);
+                        left.Item().Border(1, Colors.Black).BorderRight(3).BorderLeft(2).Padding(10)
+                            .Column(workOrderRow =>
+                            {
+                                workOrderRow.Item().Text("WORK ORDER NO:").Bold(); //.Text("1651651561");
+                                workOrderRow.Item().PaddingBottom(10).Text(Data.WorkOrder);
 
 
-                            workOrderRow.Item().Text("A/C S/N:  ; A/C REG:").Bold(); //.Text("03902 / VP - CAN");
-                            workOrderRow.Item().PaddingBottom(10).Text(Data.Acsn);
+                                workOrderRow.Item().Text("A/C S/N:  ; A/C REG:").Bold(); //.Text("03902 / VP - CAN");
+                                workOrderRow.Item().PaddingBottom(10).Text(Data.Acsn);
 
-                            workOrderRow.Item().Text("TECHNICIAN/STAMP:").Bold();
-                            workOrderRow.Item().Text(
-                                $"{Data.TechnicianName} / {Data.TechnicianStamp.ToString()}");
-                        });
-                        left.Item().Border(1, Colors.Black).BorderRight(3).BorderLeft(2).Padding(10).Column(seriesInfo =>
-                        {
-                            seriesInfo.Item().PaddingBottom(10).Row(timeRow =>
-                            {
-                                timeRow.RelativeItem().Text("Time").Bold();
-                                timeRow.RelativeItem().Text("0");
-                                timeRow.RelativeItem()
-                                    .Text(Data.TestDuration.ToString("g", CultureInfo.InvariantCulture));
+                                workOrderRow.Item().Text("TECHNICIAN/STAMP:").Bold();
+                                workOrderRow.Item().Text(
+                                    $"{Data.TechnicianName} / {Data.TechnicianStamp.ToString()}");
                             });
+                        left.Item().Border(1, Colors.Black).BorderRight(3).BorderLeft(2).Padding(10)
+                            .Column(seriesInfo =>
+                            {
+                                seriesInfo.Item().PaddingBottom(10).Row(timeRow =>
+                                {
+                                    timeRow.RelativeItem().Text("Time").Bold();
+                                    timeRow.RelativeItem().Text("0");
+                                    timeRow.RelativeItem()
+                                        .Text(Data.TestDuration.ToString("g", CultureInfo.InvariantCulture));
+                                });
 
-                            seriesInfo.Item().PaddingBottom(10).Row(voltageRow =>
-                            {
-                                voltageRow.RelativeItem().Text("Voltage").Bold();
-                                voltageRow.RelativeItem()
-                                    .Text(Data.StartVoltage.ToString("F3", CultureInfo.InvariantCulture));
-                                voltageRow.RelativeItem()
-                                    .Text(Data.EndVoltage.ToString("F3", CultureInfo.InvariantCulture));
-                            });
+                                seriesInfo.Item().PaddingBottom(10).Row(voltageRow =>
+                                {
+                                    voltageRow.RelativeItem().Text("Voltage").Bold();
+                                    voltageRow.RelativeItem()
+                                        .Text(Data.StartVoltage.ToString("F3", CultureInfo.InvariantCulture));
+                                    voltageRow.RelativeItem()
+                                        .Text(Data.EndVoltage.ToString("F3", CultureInfo.InvariantCulture));
+                                });
 
-                            seriesInfo.Item().Row(ampRow =>
-                            {
-                                ampRow.RelativeItem().Text("Amp").Bold();
-                                ampRow.RelativeItem().Text(Data.StartAmp.ToString("F3", CultureInfo.InvariantCulture));
-                                ampRow.RelativeItem().Text(Data.EndAmp.ToString("F3", CultureInfo.InvariantCulture));
+                                seriesInfo.Item().Row(ampRow =>
+                                {
+                                    ampRow.RelativeItem().Text("Amp").Bold();
+                                    ampRow.RelativeItem()
+                                        .Text(Data.StartAmp.ToString("F3", CultureInfo.InvariantCulture));
+                                    ampRow.RelativeItem()
+                                        .Text(Data.EndAmp.ToString("F3", CultureInfo.InvariantCulture));
+                                });
                             });
-                        });
-                        left.Item().Border(1, Colors.Black).BorderRight(3).BorderLeft(2).Padding(10).Column(seriesInfo =>
-                        {
-                            seriesInfo.Item().Row(ahRow =>
+                        left.Item().Border(1, Colors.Black).BorderRight(3).BorderLeft(2).Padding(10)
+                            .Column(seriesInfo =>
                             {
-                                ahRow.RelativeItem().Text("Ah.").Bold();
-                                ahRow.RelativeItem().Text(Data.Ah.ToString("F3", CultureInfo.InvariantCulture));
+                                seriesInfo.Item().Row(ahRow =>
+                                {
+                                    ahRow.RelativeItem().Text("Ah.").Bold();
+                                    ahRow.RelativeItem().Text(Data.Ah.ToString("F3", CultureInfo.InvariantCulture));
+                                });
+                                seriesInfo.Item().Row(cnRow =>
+                                {
+                                    cnRow.RelativeItem().Text("%Cn").Bold();
+                                    cnRow.RelativeItem().Text(Data.Cn.ToString("F3", CultureInfo.InvariantCulture));
+                                });
                             });
-                            seriesInfo.Item().Row(cnRow =>
-                            {
-                                cnRow.RelativeItem().Text("%Cn").Bold();
-                                cnRow.RelativeItem().Text(Data.Cn.ToString("F3", CultureInfo.InvariantCulture));
-                            });
-                        });
                     });
 
                     // CHART CENTER
@@ -195,70 +204,80 @@ public class ReportDocument : IDocument
                         .AlignRight()
                         .Padding(5)
                         .Column(right =>
-                    {
-                        const int checkBoxSpacing = 33;
-                        right.Item().AlignRight().Row(headerRow =>
                         {
-                            headerRow.RelativeItem();
-                            headerRow.ConstantItem(checkBoxSpacing).AlignCenter().Text("PASS").Bold();
-                            headerRow.ConstantItem(checkBoxSpacing).AlignCenter().Text("FAULT").Bold();
-                            headerRow.ConstantItem(checkBoxSpacing).AlignCenter().Text("N/A").Bold();
+                            const int checkBoxSpacing = 33;
+                            right.Item().AlignRight().Row(headerRow =>
+                            {
+                                headerRow.RelativeItem();
+                                headerRow.ConstantItem(checkBoxSpacing).AlignCenter().Text("PASS").Bold();
+                                headerRow.ConstantItem(checkBoxSpacing).AlignCenter().Text("FAULT").Bold();
+                                headerRow.ConstantItem(checkBoxSpacing).AlignCenter().Text("N/A").Bold();
+                            });
+                            right.Item().PaddingBottom(30).Row(visualInspectionCol =>
+                            {
+                                visualInspectionCol.RelativeItem().Text("1. VISUAL INSPECTION");
+                                visualInspectionCol.ConstantItem(checkBoxSpacing).AlignCenter()
+                                    .Text("\u2610"); // Empty checkbox
+                                visualInspectionCol.ConstantItem(checkBoxSpacing).AlignCenter()
+                                    .Text("\u2610"); // Empty checkbox
+                                visualInspectionCol.ConstantItem(checkBoxSpacing).AlignCenter()
+                                    .Text("\u2610"); // Empty checkbox
+                            });
 
+                            right.Item().PaddingBottom(30).Row(insulationTest =>
+                            {
+                                insulationTest.RelativeItem()
+                                    .Text("2. INSULATION TEST \n\n VALUE:                              MΩ");
+                                insulationTest.ConstantItem(checkBoxSpacing).AlignCenter()
+                                    .Text("\u2610"); // Empty checkbox
+                                insulationTest.ConstantItem(checkBoxSpacing).AlignCenter()
+                                    .Text("\u2610"); // Empty checkbox
+                                insulationTest.ConstantItem(checkBoxSpacing).AlignCenter()
+                                    .Text("\u2610"); // Empty checkbox
+                            });
+
+                            right.Item().PaddingBottom(30).Row(outputVoltageTest =>
+                            {
+                                outputVoltageTest.RelativeItem()
+                                    .Text("3. OUTPUT VOLTAGE TEST \n\n VALUE:                              V DC");
+                                outputVoltageTest.ConstantItem(checkBoxSpacing).AlignCenter()
+                                    .Text("\u2610"); // Empty checkbox
+                                outputVoltageTest.ConstantItem(checkBoxSpacing).AlignCenter()
+                                    .Text("\u2610"); // Empty checkbox
+                                outputVoltageTest.ConstantItem(checkBoxSpacing).AlignCenter()
+                                    .Text("\u2610"); // Empty checkbox
+                            });
+
+                            right.Item().Row(capacityTest =>
+                            {
+                                capacityTest.RelativeItem().Text("4. CAPACITY TEST");
+                                capacityTest.ConstantItem(checkBoxSpacing).AlignCenter()
+                                    .Text("\u2610"); // Empty checkbox
+                                capacityTest.ConstantItem(checkBoxSpacing).AlignCenter()
+                                    .Text("\u2610"); // Empty checkbox
+                                capacityTest.ConstantItem(checkBoxSpacing).AlignCenter()
+                                    .Text("\u2610"); // Empty checkbox
+                            });
+
+
+                            right.Item()
+                                .AlignBottom()
+                                .PaddingTop(155)
+                                .Row(noteRow =>
+                                {
+                                    const string note = "NOTE: THE INSULATION TEST CAUSES STRESS TO THE BATTERY. " +
+                                                        "DO THIS TEST ONLY IF THE VERIFICATION OF THE INSULATION RESISTANCE " +
+                                                        "IS MANDATORY, I.E. AFTER REPAIR WORK THAT HAS AN EFFECT ON " +
+                                                        "THE INSULATION RESISTANCE.";
+
+                                    noteRow.RelativeItem().Text(note).FontSize(7);
+                                });
                         });
-                        right.Item().PaddingBottom(30).Row(visualInspectionCol =>
-                        {
-                            visualInspectionCol.RelativeItem().Text("1. VISUAL INSPECTION");
-                            visualInspectionCol.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
-                            visualInspectionCol.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
-                            visualInspectionCol.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
-
-                        });
-
-                        right.Item().PaddingBottom(30).Row(insulationTest =>
-                        {
-                            insulationTest.RelativeItem().Text("2. INSULATION TEST \n\n VALUE:                              MΩ");
-                            insulationTest.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
-                            insulationTest.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
-                            insulationTest.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
-
-                        });
-
-                        right.Item().PaddingBottom(30).Row(outputVoltageTest =>
-                        {
-                            outputVoltageTest.RelativeItem().Text("3. OUTPUT VOLTAGE TEST \n\n VALUE:                              V DC");
-                            outputVoltageTest.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
-                            outputVoltageTest.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
-                            outputVoltageTest.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
-
-                        });
-
-                        right.Item().Row(capacityTest =>
-                        {
-                            capacityTest.RelativeItem().Text("4. CAPACITY TEST");                            
-                            capacityTest.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
-                            capacityTest.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
-                            capacityTest.ConstantItem(checkBoxSpacing).AlignCenter().Text("\u2610"); // Empty checkbox
-
-                        });
-                        
-
-                        right.Item()
-                            .AlignBottom()
-                            .PaddingTop(155)
-                            .Row(noteRow =>
-                        {
-                            const string note = "NOTE: THE INSULATION TEST CAUSES STRESS TO THE BATTERY. " +
-                                                "DO THIS TEST ONLY IF THE VERIFICATION OF THE INSULATION RESISTANCE " +
-                                                "IS MANDATORY, I.E. AFTER REPAIR WORK THAT HAS AN EFFECT ON " +
-                                                "THE INSULATION RESISTANCE.";
-                            
-                            noteRow.RelativeItem().Text(note).FontSize(7);
-                        });
-                    });
                 });
             });
         });
     }
+
     private byte[] LoadEmbeddedImage(string resourceName)
     {
         var assembly = Assembly.GetExecutingAssembly();

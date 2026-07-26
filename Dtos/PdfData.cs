@@ -6,7 +6,7 @@ public class PdfData
     {
     }
 
-    public PdfData(List<CsvRecord> records)
+    public PdfData(IReadOnlyList<CsvRecord> records)
     {
         var minTimeStep = records.Min(record => record.TotalTime);
         var maxTimeStep = records.Max(record => record.TotalTime);
@@ -21,7 +21,6 @@ public class PdfData
         Ah = records.FirstOrDefault(rec => rec.TotalTime == maxTimeStep)?.Ah + 1 ?? 0;
 
         Cn = Ah * 100 / 4;
-
     }
 
     public string SerialNumber { get; init; } = string.Empty;
@@ -37,8 +36,8 @@ public class PdfData
     public double EndVoltage { get; init; }
     public double StartAmp { get; init; }
     public double EndAmp { get; init; }
-    public double Ah { get; init; } = 0;
-    public double Cn { get; init; } = 0;
+    public double Ah { get; init; }
+    public double Cn { get; init; }
 
     public string BatteryPn { get; init; } = string.Empty;
     public string Amdt { get; init; } = string.Empty;
