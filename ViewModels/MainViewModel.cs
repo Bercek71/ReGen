@@ -30,6 +30,7 @@ public class MainViewModel : BaseViewModel
     private string _workOrder = Settings_Designer.Default.WorkOrder;
     private string _batteryPn = Settings_Designer.Default.BatteryPn;
     private string _amdt = Settings_Designer.Default.AMDT;
+    private string _testNumberDisplay = Settings_Designer.Default.TestNumber.ToString();
 
     public MainViewModel()
     {
@@ -284,6 +285,24 @@ public class MainViewModel : BaseViewModel
         }
     }
 
+    #region TestNumberDisplay
+    
+    public string TestNumberDisplay
+    {
+        get => _testNumberDisplay.ToString();
+        set
+        {
+            if (_testNumberDisplay == value) return;
+            _testNumberDisplay = value;
+            OnPropertyChanged();
+            if (!ulong.TryParse(value, out var result)) return;
+            Settings_Designer.Default.TestNumber = result;
+            Settings_Designer.Default.Save();
+        }
+    }
+
+    #endregion
+
     private async void CheckForUpdate()
     {
         try
@@ -425,6 +444,9 @@ public class MainViewModel : BaseViewModel
 
             Settings_Designer.Default.TestNumber++;
             Settings_Designer.Default.Save();
+            
+            TestNumberDisplay = Settings_Designer.Default.TestNumber.ToString();
+
         }
         catch (Exception ex)
         {

@@ -225,9 +225,9 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="16" />
                                     <ColumnDefinition Width="*" />
-                                    <!-- <ColumnDefinition Width="24" /> -->
-                                    <!-- <ColumnDefinition Width="*" /> -->
                                 </Grid.ColumnDefinitions>
 
                                 
@@ -240,14 +240,23 @@
                                     Style="{StaticResource ModernTextBox}"
                                     Text="{Binding Acsn, UpdateSourceTrigger=PropertyChanged}" />
                                 
-                                <!-- <TextBlock Grid.Row="0" Grid.Column="2" Text="Serial Number" -->
-                                <!--            Style="{StaticResource FormLabel}" /> -->
-                                <!-- <TextBox -->
-                                <!--     Grid.Column="2" -->
-                                <!--     Grid.Row="1" -->
-                                <!--     HorizontalScrollBarVisibility="Disabled" -->
-                                <!--     Style="{StaticResource ModernTextBox}" -->
-                                <!--     Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}" /> -->
+                                <TextBlock Grid.Column="2" Grid.Row="0" Text="Test Number" Style="{StaticResource FormLabel}" />
+                                <TextBox
+                                    IsEnabled="{Binding IsRestrictedFieldEditEnabled}"
+                                    Grid.Column="2"
+                                    Grid.Row="1"
+                                    HorizontalScrollBarVisibility="Disabled"
+                                    Style="{StaticResource ModernTextBox}">
+                                <TextBox.Text>
+                                    <Binding Path="TestNumberDisplay" UpdateSourceTrigger="PropertyChanged"
+                                             ValidatesOnDataErrors="True"
+                                             Mode="TwoWay">
+                                        <Binding.ValidationRules>
+                                            <validation:UlongValidation />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                                </TextBox>
                             </Grid>
                         </StackPanel>
                         
